@@ -17,7 +17,6 @@ module.exports = {
     'computed-property-spacing': [ 'error', 'always' ],
     'max-len': [ 'error', { 'code': 120 } ],
     'import/extensions': 0,
-    'import/prefer-default-export': 0,
     'semi': [ 'error', 'always' ],
     'space-in-parens': [ 'error', 'always' ],
     'template-curly-spacing': [ 'error', 'always' ],
