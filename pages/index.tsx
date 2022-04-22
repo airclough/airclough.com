@@ -4,7 +4,9 @@ import Namesake from '../src/components/index/Namesake';
 
 const Index: FC = () => (
   <div className="Index">
-    <Namesake />
+    <div className="indexContainer">
+      <Namesake />
+    </div>
   </div>
 );
 

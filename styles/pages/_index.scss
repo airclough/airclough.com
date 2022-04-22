@@ -1,0 +1,43 @@
+.Index {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+
+  .indexContainer {
+    .Namesake {
+      h1 {
+        align-items: center;
+        display: flex;
+        position: relative;
+
+        // &::after {
+        //   background: #fff;
+        //   bottom: 0;
+        //   content: "";
+        //   display: block;
+        //   height: .5rem;
+        //   left: 0;
+        //   position: absolute;
+        // }
+
+        .Letters {
+          height: 8rem;
+          margin-right: 2rem;
+          overflow: hidden;
+          text-align: center;
+          width: 8rem;
+
+          &:last-of-type {
+            margin-right: 0;
+          }
+
+          > div {
+            height: inherit;
+            transition: transform 2s;
+          }
+        }
+      }
+    }
+  }
+}
