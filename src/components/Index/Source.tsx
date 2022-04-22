@@ -12,7 +12,7 @@ const Source: FC = () => {
     <div className={ `Source ${ ( namesakeTransition !== 'COMPLETE' && 'fade' ) || null }` }>
       <a href="https://github.com/airclough/airclough.com" target="_blank">
         <button className="btn btn-primary" type="button">
-          Souce code
+          Source code
         </button>
       </a>
       <ul>
