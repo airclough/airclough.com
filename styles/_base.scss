@@ -9,11 +9,10 @@ body {
 
   a {
     color: $primary;
-    text-decoration: underline;
+    text-decoration: none;
 
     &:hover {
       color: $primary;
-      text-decoration: underline;
     }
   }
 
@@ -29,5 +28,15 @@ body {
     font-weight: 100;
     line-height: 1;
     margin: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  ul,
+  li {
+    margin: 0;
+    padding: 0;
   }
 }
