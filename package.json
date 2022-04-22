@@ -1,0 +1,9 @@
+{
+  "author": "Robby Fairclough <robby.fairclough@gmail.com>",
+  "license": "false",
+  "main": "index.js",
+  "name": "airclough.com",
+  "private": true,
+  "repository": "git@github.com:airclough/airclough.com.git",
+  "version": "1.0.0"
+}
