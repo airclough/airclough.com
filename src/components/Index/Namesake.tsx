@@ -11,11 +11,20 @@ interface LettersProps {
 const alphabetMinusQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ'.split( '' );
 const clough = 'CLOUGH'.split( '' );
 
-const Letters: FC<LettersProps> = ( { namesakeLetter } ) => (
-  <div className="Letters">
-    { alphabetMinusQ.map( ( letter ) => <div style={ { transform: `translate3d( 0, -${ alphabetMinusQ.indexOf( namesakeLetter ) * 8 }rem, 0 )` } }>{ letter }</div> ) }
-  </div>
-);
+const Letters: FC<LettersProps> = ( { namesakeLetter } ) => {
+  const y = alphabetMinusQ.indexOf( namesakeLetter ) * 8;
+
+  return (
+    <div className="Letters">
+      { alphabetMinusQ.map( ( letter ) => <div
+            style={ { transform: `translate3d( 0, -${ y }rem, 0 )` } }
+          >
+            { letter }
+          </div> )
+      }
+    </div>
+  );
+};
 
 const Namesake: FC = () => {
   const { namesake } = useSelector( ( { app }: RootState ) => app );
@@ -27,7 +36,7 @@ const Namesake: FC = () => {
         namesake[ i ] = letter;
         dispatch( { payload: { namesake }, type: SET_NAMESAKE } );
       }, i * 250 );
-    } )
+    } );
   }, [] );
 
   return (

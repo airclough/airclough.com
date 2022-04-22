@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Namesake from '../src/components/index/Namesake';
+import Namesake from '../src/components/Index/Namesake';
 
 const Index: FC = () => (
   <div className="Index">
