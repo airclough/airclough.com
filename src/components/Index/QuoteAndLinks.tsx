@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import Quote from './Quote';
@@ -9,7 +9,7 @@ const QuoteAndLinks: FC = () => {
   const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className={ `QuoteAndLinks ${ ( namesakeTransition !== 'COMPLETE' && 'fade' ) || null }` }>
+    <div className={ `QuoteAndLinks ${ ( namesakeTransition === 'COMPLETE' && 'show' ) || null }` }>
       <Quote />
       <Links />
     </div>

@@ -7,8 +7,8 @@ const JordanLogo: FC = () => {
   const { airTransition, namesakeTransition } = useSelector( ( { app }: RootState ) => app );
   const [ fall, setFall ] = useState( false );
   const classList = [
-    ( airTransition !== 'COMPLETE' && 'fade' ) || null,
-    ( fall && 'fall' ) || null,
+    ( airTransition === 'COMPLETE' && 'show' ) || '',
+    ( fall && 'fall' ) || '',
   ];
 
   useEffect( () => {

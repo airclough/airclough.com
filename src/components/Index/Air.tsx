@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SET_AIR_INDEX, SET_AIR_TRANSITION } from '../../redux/actions/app';
@@ -16,7 +16,7 @@ const Letter: FC<LetterProps> = ( { i, letter } ) => {
   const { airIndex } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className={ `Letter ${ airIndex !== null && airIndex >= i ? '' : 'fade' }` }>
+    <div className={ `Letter ${ airIndex !== null && i <= airIndex ? 'show' : '' }` }>
       { letter }
     </div>
   );
@@ -33,7 +33,7 @@ const Air: FC = () => {
   useEffect( () => {
     if ( airTransition !== 'ACTIVE' ) return;
 
-    air.forEach( ( letter, i ) => {
+    air.forEach( ( _letter, i ) => {
       setTimeout( () => {
         dispatch( { payload: { airIndex: i }, type: SET_AIR_INDEX } );
         if ( i === air.length - 1 ) {

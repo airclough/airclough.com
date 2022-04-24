@@ -46,7 +46,7 @@ const Links: FC = () => {
   const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className={ `Links ${ ( namesakeTransition !== 'COMPLETE' && 'fade' ) || null }` }>
+    <div className={ `Links ${ ( namesakeTransition === 'COMPLETE' && 'show' ) || '' }` }>
       <a href="https://github.com/airclough/airclough.com" target="_blank">
         <button className="btn btn-outline-primary" type="button">
           Source code

@@ -54,7 +54,7 @@ const Namesake: FC = () => {
 
   return (
     <div className="Namesake">
-      <h1 className={ ( airTransition !== 'COMPLETE' && 'fade' ) || null }>
+      <h1 className={ ( airTransition === 'COMPLETE' && 'show' ) || '' }>
         { namesake.map( ( namesakeLetter, i ) => <Letters key={ i } namesakeLetter={ namesakeLetter } /> ) }
       </h1>
       <Air />
