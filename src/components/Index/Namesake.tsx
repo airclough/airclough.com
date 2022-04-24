@@ -20,12 +20,13 @@ const Letters: FC<LettersProps> = ( { multiplier, namesakeLetter } ) => {
 
   return (
     <div className="Letters">
-      { alphabetMinusQ.map( ( letter ) => <div
-            key={ letter }
-            style={ { transform: `translate3d( 0, -${ y }rem, 0 )` } }
-          >
-            { letter }
-          </div> )
+      {
+        alphabetMinusQ.map( ( letter ) => <div
+          key={ letter }
+          style={ { transform: `translate3d( 0, -${ y }rem, 0 )` } }
+        >
+          { letter }
+        </div> )
       }
     </div>
   );
@@ -67,7 +68,13 @@ const Namesake: FC = () => {
     <div className="Namesake">
       <Air />
       <h1 className={ ( airTransition === 'COMPLETE' && 'show' ) || '' }>
-        { namesake.map( ( namesakeLetter, i ) => <Letters key={ i } multiplier={ multiplier } namesakeLetter={ namesakeLetter } /> ) }
+        {
+          namesake.map( ( namesakeLetter, i ) => <Letters
+            key={ i }
+            multiplier={ multiplier }
+            namesakeLetter={ namesakeLetter }
+          /> )
+        }
       </h1>
       <JordanLogo />
     </div>
