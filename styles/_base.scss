@@ -3,7 +3,7 @@ body {
   color: #333;
   font-family: 'Kanit', sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1;
   min-width: 320px;
 
@@ -32,6 +32,10 @@ body {
 
   li {
     list-style: none;
+  }
+
+  p {
+    margin: 0;
   }
 
   ul,

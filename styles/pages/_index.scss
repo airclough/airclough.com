@@ -7,36 +7,10 @@
   position: relative;
 
   .indexContainer {
-    position: relative;
-
-    .Air {
-      h2 {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        left: 0;
-        position: absolute;
-        top: 50%;
-        transform: translate3d( 0, -50%, 0 );
-        width: 100%;
-
-        .Letter {
-          margin-right: 9.5rem;
-          opacity: 1;
-          transition: opacity 1s;
-
-          &:last-of-type {
-            margin-right: 0;
-          }
-
-          &.fade {
-            opacity: 0;
-          }
-        }
-      }
-    }
-
     .Namesake {
+      position: relative;
+      z-index: 1;
+
       h1 {
         align-items: center;
         display: flex;
@@ -64,14 +38,43 @@
           }
         }
       }
+
+      .Air {
+        left: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate3d( 0, -50%, 0 );
+        width: 100%;
+
+        h2 {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+
+          .Letter {
+            margin-right: 9.5rem;
+            opacity: 1;
+            transition: opacity 1s;
+
+            &:last-of-type {
+              margin-right: 0;
+            }
+
+            &.fade {
+              opacity: 0;
+            }
+          }
+        }
+      }
     }
 
-    .Source {
+    .QuoteAndLinks {
       left: 0;
+      padding: 3rem 0;
       position: absolute;
-      text-align: center;
       top: 50%;
-      transform: translate3d( 0, 8rem, 0 );
+      text-align: center;
+      transform: translate3d( 0, 4rem, 0 );
       transition: opacity 1s;
       width: 100%;
       z-index: 1;
@@ -80,25 +83,73 @@
         opacity: 0;
       }
 
-      button {
-        margin-bottom: 1rem;
+      .Quote {
+        margin-bottom: 3rem;
+
+        p {
+          color: #ccc;
+          font-size: 1.25rem;
+          font-style: italic;
+          line-height: 1.5rem;
+          text-align: center;
+        }
       }
 
-      ul {
-        li {
-          display: inline-block;
-          font-size: 1.5rem;
-          margin-right: 1rem;
+      .Links {
+        button {
+          margin-bottom: 1.5rem;
+        }
 
-          &:last-of-type {
-            margin-right: 0;
-          }
+        ul {
+          li {
+            display: inline-block;
+            font-size: 1.5rem;
+            height: 24px;
+            margin-right: 1rem;
 
-          a {
-            color: #333;
+            &:last-of-type {
+              margin-right: 0;
+            }
 
-            &:hover {
-              color: $primary;
+            &.peffercorn {
+              height: 25px;
+              width: 20px;
+              position: relative;
+
+              &:hover {
+                .active {
+                  display: block;
+                }
+
+                .default {
+                  display: none;
+                }
+              }
+
+              img {
+                height: 22px;
+                left: 0;
+                position: absolute;
+                top: 1px;
+                vertical-align: top;
+
+                &.active {
+                  display: none;
+                }
+              }
+            }
+
+            a {
+              color: #333;
+
+              &:hover {
+                color: $primary;
+              }
+
+              img,
+              svg {
+                display: block;
+              }
             }
           }
         }

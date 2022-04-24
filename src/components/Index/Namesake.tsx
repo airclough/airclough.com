@@ -1,6 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Air from './Air';
+import JordanLogo from './JordanLogo';
 import { SET_NAMESAKE, SET_NAMESAKE_TRANSITION } from '../../redux/actions/app';
 import { RootState } from '../../redux/reducers';
 
@@ -55,6 +57,8 @@ const Namesake: FC = () => {
       <h1 className={ ( airTransition !== 'COMPLETE' && 'fade' ) || null }>
         { namesake.map( ( namesakeLetter, i ) => <Letters key={ i } namesakeLetter={ namesakeLetter } /> ) }
       </h1>
+      <Air />
+      <JordanLogo />
     </div>
   );
 };
