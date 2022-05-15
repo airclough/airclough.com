@@ -17,7 +17,7 @@ const JordanLogo: FC = () => {
         alt="Jordan logo"
         className={ ( fall && 'fall' ) || '' }
         src="/logos/jordan.svg"
-        style={ { opacity: +( airTransition === 'COMPLETE' ) * .05 } }
+        style={ { opacity: +( airTransition === 'COMPLETE' ) * 0.05 } }
       />
     </div>
   );
