@@ -1,0 +1,23 @@
+.NotFound {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+
+  .NotFoundContainer {
+    img {
+      display: block;
+      margin-bottom: 1.5rem;
+      width: 640px;
+
+      @media ( max-width: $mobileMax ) {
+        width: 320px;
+      }
+    }
+
+    a {
+      display: block;
+      text-align: center;
+    }
+  }
+}
