@@ -11,17 +11,17 @@ interface LettersProps {
   namesakeLetter: string;
 }
 
-const alphabetMinusQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ'.split( '' );
+const alphabetSansQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ'.split( '' );
 const clough = 'CLOUGH'.split( '' );
 const interval = 250;
 
 const Letters: FC<LettersProps> = ( { multiplier, namesakeLetter } ) => {
-  const y = alphabetMinusQ.indexOf( namesakeLetter ) * multiplier;
+  const y = alphabetSansQ.indexOf( namesakeLetter ) * multiplier;
 
   return (
     <div className="Letters">
       {
-        alphabetMinusQ.map( ( letter ) => <div
+        alphabetSansQ.map( ( letter ) => <div
           key={ letter }
           style={ { transform: `translate3d( 0, -${ y }rem, 0 )` } }
         >
@@ -67,7 +67,7 @@ const Namesake: FC = () => {
   return (
     <div className="Namesake">
       <Air />
-      <h1 className={ ( airTransition === 'COMPLETE' && 'show' ) || '' }>
+      <h1 style={ { opacity: +( airTransition === 'COMPLETE' ) } }>
         {
           namesake.map( ( namesakeLetter, i ) => <Letters
             key={ i }

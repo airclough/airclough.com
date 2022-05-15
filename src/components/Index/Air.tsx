@@ -16,7 +16,7 @@ const Letter: FC<LetterProps> = ( { i, letter } ) => {
   const { airIndex } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className={ `Letter ${ airIndex !== null && i <= airIndex ? 'show' : '' }` }>
+    <div className="Letter" style={ { opacity: +( airIndex !== null && i <= airIndex ) } }>
       { letter }
     </div>
   );
