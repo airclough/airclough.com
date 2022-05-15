@@ -9,7 +9,7 @@ const QuoteAndLinks: FC = () => {
   const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className={ `QuoteAndLinks ${ ( namesakeTransition === 'COMPLETE' && 'show' ) || '' }` }>
+    <div className="QuoteAndLinks" style={ { opacity: +( namesakeTransition === 'COMPLETE' ) } }>
       <Quote />
       <Links />
     </div>

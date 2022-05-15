@@ -17,10 +17,6 @@
     transition: opacity 1s;
     top: 1rem;
 
-    &.show {
-      opacity: 1;
-    }
-
     a {
       color: #ccc;
 
@@ -121,10 +117,6 @@
             margin: 0 auto;
           }
 
-          &.show {
-            opacity: .05;
-          }
-
           &.fall {
             animation: fall 4s forwards;
             animation-timing-function: ease-in-out;
@@ -149,10 +141,6 @@
         position: relative;
         top: 0;
         transform: translate3d( 0, 0, 0 );
-      }
-
-      &.show {
-        opacity: 1;
       }
 
       .Quote {
