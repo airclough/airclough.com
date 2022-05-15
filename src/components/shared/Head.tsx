@@ -4,6 +4,8 @@ import React, { FC } from 'react';
 
 config.autoAddCss = false;
 
+const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
+
 const Head: FC = () => (
   <NextHead>
     <title>airclough.com | Robby Fairclough</title>
@@ -16,14 +18,14 @@ const Head: FC = () => (
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <style>{ dom.css() }</style>
-    <script async src={ `https://www.googletagmanager.com/gtag/js?id=${ process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID }` } />
+    <script async src={ `https://www.googletagmanager.com/gtag/js?id=${ googleAnalyticsId }` } />
     <script dangerouslySetInnerHTML={ {
       __html: `
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push( arguments ); }
         gtag( 'js', new Date() );
-        gtag( 'config', ${ process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID } );
-      `
+        gtag( 'config', ${ googleAnalyticsId } );
+      `,
     } } />
   </NextHead>
 );
