@@ -4,7 +4,7 @@
 
 ### What is [airclough.com](https://airclough.com)?
 
-airclough.com is a React application that leverages many of the software tools currently at my disposal.
+[airclough.com](https://airclough.com) is a React application that leverages many of the software tools and packages currently at my disposal.
 
 ### Why airclough?
 
@@ -24,4 +24,4 @@ airclough.com is a React application that leverages many of the software tools c
 * __TypeScript__
 * __Vercel__
 
-*Thanks for stopping by.*
+*If you don't want to code that way, don't code that way.*
