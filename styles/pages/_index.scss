@@ -22,12 +22,6 @@
         transform: translate3d( 0, -50%, 0 );
         width: 100%;
 
-        @media ( max-width: $mobileMax ) {
-          position: relative;
-          top: 0;
-          transform: translate3d( 0, 0, 0 );
-        }
-
         h2 {
           align-items: center;
           display: flex;
@@ -40,7 +34,8 @@
             transition: opacity 1s;
 
             @media ( max-width: $mobileMax ) {
-              margin-right: 3.5rem;
+              font-size: .75rem;
+              margin-right: 3.75rem;
             }
 
             &:last-of-type {
