@@ -10,6 +10,27 @@
     padding: 3rem 0;
   }
 
+  .Eth {
+    opacity: 0;
+    position: absolute;
+    right: 1rem;
+    transition: opacity 1s;
+    top: 1rem;
+
+    &.show {
+      opacity: 1;
+    }
+
+    a {
+      color: #ccc;
+
+      &:hover {
+        color: $primary;
+        text-decoration: underline;
+      }
+    }
+  }
+
   .indexContainer {
     .Namesake {
       position: relative;

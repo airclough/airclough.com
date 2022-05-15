@@ -9,7 +9,7 @@ const QuoteAndLinks: FC = () => {
   const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className={ `QuoteAndLinks ${ ( namesakeTransition === 'COMPLETE' && 'show' ) || null }` }>
+    <div className={ `QuoteAndLinks ${ ( namesakeTransition === 'COMPLETE' && 'show' ) || '' }` }>
       <Quote />
       <Links />
     </div>
