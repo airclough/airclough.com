@@ -12,7 +12,7 @@
 
 ### Where are the tests, bro? 🧐
 
-![jordan-crying](https://user-images.githubusercontent.com/1694414/165230792-10395649-aaa6-48a0-8e34-575a784285d9.jpg)
+![jordan-crying](https://airclough.com/images/jordan-crying.png)
 
 ## Tools
 
