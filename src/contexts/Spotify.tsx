@@ -9,6 +9,9 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { SET_JORDAN } from '../redux/actions/app';
+import { RootState } from '../redux/reducers';
+
 interface Track {
   artistName: string;
   explicit: boolean;
@@ -33,11 +36,13 @@ const playlistId = process.env.NEXT_PUBLIC_SPOTIFY_PLAYLIST_ID;
 const SpotifyContext = createContext<Spotify | undefined>( undefined );
 
 export const SpotifyProvider = ( { children }: Props ) => {
+  const { jordanTransition } = useSelector( ( { app }: RootState ) => app );
   const [ accessToken, setAccessToken ] = useState<Spotify[ 'accessToken' ]>( null );
   const [ activeDevice, setActiveDevice ] = useState<Spotify[ 'activeDevice' ]>( null );
   const [ activeTrack, setActiveTrack ] = useState<Spotify[ 'activeTrack' ]>( null );
   const [ activeTrackUri, setActiveTrackUri ] = useState<Spotify[ 'activeTrackUri' ]>( null );
   const [ playlist, setPlaylist ] = useState<Spotify[ 'playlist' ]>( null );
+  const dispatch = useDispatch();
   const router = useRouter();
   const { asPath } = router;
   const headers = {
@@ -48,7 +53,7 @@ export const SpotifyProvider = ( { children }: Props ) => {
   useEffect( () => {
     const paramsArray = asPath.slice( 2 )
       .split( '&' );
-    const paramsMap = {};
+    const paramsMap: any = {};
 
     paramsArray.forEach( ( param ) => {
       const [ key, value ] = param.split( '=' );
@@ -56,7 +61,7 @@ export const SpotifyProvider = ( { children }: Props ) => {
       paramsMap[ key ] = value;
     } );
 
-    setAccessToken( paramsMap[ 'access_token' ] );
+    setAccessToken( paramsMap.access_token );
   }, [ asPath ] );
 
   useEffect( () => {
@@ -74,7 +79,7 @@ export const SpotifyProvider = ( { children }: Props ) => {
     axios.get( 'https://api.spotify.com/v1/me/player/devices', { headers } )
       .then( ( { data } ) => {
         if ( !data ) return;
-        const { devices } = data
+        const { devices } = data;
         const [ device ] = devices.filter( ( { is_active } ) => is_active );
         if ( !device ) return;
         const { id } = device;
@@ -85,14 +90,19 @@ export const SpotifyProvider = ( { children }: Props ) => {
   }, [ accessToken ] );
 
   useEffect( () => {
-    if ( !activeDevice || !playlist ) return;
+    if ( !activeDevice || jordanTransition !== 'COMPLETE' || !playlist ) return;
     const interval = setInterval( () => {
       axios.get( 'https://api.spotify.com/v1/me/player', { headers } )
         .then( ( { data } ) => {
-          console.log( { data } );
+          // console.log( { data } );
           if ( !data ) return;
-          const { item } = data;
-          const { artists, explicit, name: songName, uri } = item;
+          const { is_playing: isPlaying, item } = data;
+          const {
+            artists,
+            explicit,
+            name: songName,
+            uri,
+          } = item;
           const [ artist ] = artists;
           const { name: artistName } = artist;
 
@@ -100,21 +110,34 @@ export const SpotifyProvider = ( { children }: Props ) => {
             artistName,
             explicit,
             songName,
-            uri
+            uri,
           } );
           setActiveTrackUri( uri );
         } )
         .catch( ( error ) => console.error( { error } ) );
     }, 1000 );
 
-    axios.put( `https://api.spotify.com/v1/me/player/play`, { context_uri: playlist }, { headers } )
+    axios.put( 'https://api.spotify.com/v1/me/player/play', { context_uri: playlist }, { headers } )
       .catch( ( error ) => console.error( { error } ) );
-
-    return () => clearInterval( interval );
-  }, [ activeDevice, playlist ] );
+  }, [ activeDevice, jordanTransition, playlist ] );
 
   useEffect( () => {
     console.log( { activeTrackUri } );
+  }, [ activeTrackUri ] );
+
+  useEffect( () => {
+    if ( !activeTrackUri ) return;
+    const { songName } = activeTrack;
+    const [ first, second ] = songName.split( ' ' );
+    const newJordan = Array.from( { length: 6 }, () => ' ' );
+
+    ( second || first )
+      .toUpperCase()
+      .slice( 0, 6 )
+      .split( '' )
+      .forEach( ( letter, i ) => { newJordan[ i ] = letter || ' '; } );
+
+    dispatch( { payload: { jordan: newJordan }, type: SET_JORDAN } );
   }, [ activeTrackUri ] );
 
   return (

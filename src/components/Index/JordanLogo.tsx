@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducers';
 
 const JordanLogo: FC = () => {
-  const { airTransition, namesakeTransition } = useSelector( ( { app }: RootState ) => app );
+  const { airTransition, jordanTransition } = useSelector( ( { app }: RootState ) => app );
   const [ fall, setFall ] = useState( false );
 
   useEffect( () => {
-    if ( namesakeTransition === 'COMPLETE' ) setFall( true );
-  }, [ namesakeTransition ] );
+    if ( jordanTransition === 'COMPLETE' ) setFall( true );
+  }, [ jordanTransition ] );
 
   return (
     <div className="JordanLogo">

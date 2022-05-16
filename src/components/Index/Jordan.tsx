@@ -3,20 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Air from './Air';
 import JordanLogo from './JordanLogo';
-import { SET_NAMESAKE, SET_NAMESAKE_TRANSITION } from '../../redux/actions/app';
+import { SET_JORDAN, SET_JORDAN_TRANSITION } from '../../redux/actions/app';
 import { RootState } from '../../redux/reducers';
 
 interface LettersProps {
   multiplier: number;
-  namesakeLetter: string;
+  jordanLetter: string;
 }
 
-const alphabetSansQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ'.split( '' );
+const alphabetSansQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ '.split( '' );
 const clough = 'CLOUGH'.split( '' );
-const interval = 250;
+const interval = 2000;
 
-const Letters: FC<LettersProps> = ( { multiplier, namesakeLetter } ) => {
-  const y = alphabetSansQ.indexOf( namesakeLetter ) * multiplier;
+const Letters: FC<LettersProps> = ( { multiplier, jordanLetter } ) => {
+  const y = alphabetSansQ.indexOf( jordanLetter ) * multiplier;
 
   return (
     <div className="Letters">
@@ -33,7 +33,7 @@ const Letters: FC<LettersProps> = ( { multiplier, namesakeLetter } ) => {
 };
 
 const Namesake: FC = () => {
-  const { airTransition, namesake } = useSelector( ( { app }: RootState ) => app );
+  const { airTransition, jordan } = useSelector( ( { app }: RootState ) => app );
   const [ multiplier, setMultiplier ] = useState<number>( 8 );
   const dispatch = useDispatch();
 
@@ -48,20 +48,16 @@ const Namesake: FC = () => {
 
   useEffect( () => {
     if ( airTransition !== 'COMPLETE' ) return;
-    dispatch( { payload: { namesakeTransition: 'ACTIVE' }, type: SET_NAMESAKE_TRANSITION } );
+    dispatch( { payload: { jordanTransition: 'ACTIVE' }, type: SET_JORDAN_TRANSITION } );
 
-    clough.forEach( ( letter, i ) => {
-      setTimeout( () => {
-        namesake[ i ] = letter;
-        dispatch( { payload: { namesake }, type: SET_NAMESAKE } );
-        if ( i === clough.length - 1 ) {
-          setTimeout( () => dispatch( {
-            payload: { namesakeTransition: 'COMPLETE' },
-            type: SET_NAMESAKE_TRANSITION,
-          } ), interval * 2 );
-        }
-      }, ( i + 8 ) * interval );
-    } );
+    setTimeout( () => {
+      dispatch( { payload: { jordan: clough }, type: SET_JORDAN } );
+    }, interval );
+
+    setTimeout( () => dispatch( {
+      payload: { jordanTransition: 'COMPLETE' },
+      type: SET_JORDAN_TRANSITION,
+    } ), interval + 1000 );
   }, [ airTransition ] );
 
   return (
@@ -69,10 +65,10 @@ const Namesake: FC = () => {
       <Air />
       <h1 style={ { opacity: +( airTransition === 'COMPLETE' ) } }>
         {
-          namesake.map( ( namesakeLetter, i ) => <Letters
+          jordan.map( ( jordanLetter, i ) => <Letters
             key={ i }
             multiplier={ multiplier }
-            namesakeLetter={ namesakeLetter }
+            jordanLetter={ jordanLetter }
           /> )
         }
       </h1>

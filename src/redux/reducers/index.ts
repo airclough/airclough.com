@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux';
 
 import app from './app';
-import spotify from './spotify';
 
-export const rootReducer = combineReducers( { app, spotify } );
+export const rootReducer = combineReducers( { app } );
 
 export type RootState = ReturnType<typeof rootReducer>;

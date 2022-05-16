@@ -14,10 +14,10 @@ const generateDisplayAddress = ( a: string ) => {
 };
 
 const Eth: FC = () => {
-  const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
+  const { jordanTransition } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className="Eth" style={ { opacity: +( namesakeTransition === 'COMPLETE' ) } }>
+    <div className="Eth" style={ { opacity: +( jordanTransition === 'COMPLETE' ) } }>
       <a href={ `https://etherscan.io/tokenholdings?a=${ address }` } target="_blank">
         { generateDisplayAddress( address ) }
       </a>

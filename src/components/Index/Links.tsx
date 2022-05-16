@@ -43,10 +43,10 @@ const LinkListItem: FC<Link> = ( { href, icon } ) => (
 );
 
 const Links: FC = () => {
-  const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
+  const { jordanTransition } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className={ `Links ${ ( namesakeTransition === 'COMPLETE' && 'show' ) || '' }` }>
+    <div className={ `Links ${ ( jordanTransition === 'COMPLETE' && 'show' ) || '' }` }>
       <a href="https://github.com/airclough/airclough.com" target="_blank">
         <button className="btn btn-outline-primary" type="button">
           Source code

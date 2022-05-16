@@ -6,10 +6,10 @@ import Links from './Links';
 import { RootState } from '../../redux/reducers';
 
 const QuoteAndLinks: FC = () => {
-  const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
+  const { jordanTransition } = useSelector( ( { app }: RootState ) => app );
 
   return (
-    <div className="QuoteAndLinks" style={ { opacity: +( namesakeTransition === 'COMPLETE' ) } }>
+    <div className="QuoteAndLinks" style={ { opacity: +( jordanTransition === 'COMPLETE' ) } }>
       <Quote />
       <Links />
     </div>
