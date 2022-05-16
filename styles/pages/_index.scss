@@ -144,6 +144,7 @@
 
       .Quote {
         margin-bottom: 3rem;
+        min-height: 3rem;
 
         p {
           color: #ccc;
@@ -215,6 +216,15 @@
         }
       }
     }
+  }
+
+  .Spotify {
+    bottom: 0;
+    left: 0;
+    padding: 3rem;
+    position: absolute;
+    text-align: center;
+    width: 100%;
   }
 }
 
