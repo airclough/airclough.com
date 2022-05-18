@@ -1,0 +1,159 @@
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+import type { RootState } from '../store';
+// import type { Category, Entity } from '../../types/index.d';
+
+interface Track {
+  albumCover: any;
+  artistName: string;
+  explicit: boolean;
+  isPlaying: boolean;
+  songName: string;
+  uri: string;
+}
+
+interface Spotify {
+  accessToken: string | null;
+  track: Track | null;
+  trackUri: string | null;
+  deviceId: string | null;
+  mainPlaylistUri: string | null;
+}
+
+const mainPlaylistId = process.env.NEXT_PUBLIC_SPOTIFY_PLAYLIST_ID;
+const url = process.env.NEXT_PUBLIC_SPOTIFY_URL;
+
+export const getDevices = createAsyncThunk<any, void, { state: RootState }>(
+  'devices',
+  async ( _, { getState } ) => {
+    const { accessToken } = getState().spotify;
+    const id = await axios.get( `${ url }/me/player/devices`, { headers: { Authorization: `Bearer ${ accessToken }` } } )
+      .then( ( { data } ) => {
+        if ( !data ) return;
+        const { devices } = data;
+        const [ device ] = devices.filter( ( { is_active } ) => is_active );
+        if ( !device ) return null;
+        const { id } = device;
+
+        return id;
+      } )
+      .catch( ( error ) => console.error( { error } ) );
+
+    return id;
+  }
+);
+
+export const getPlaylists = createAsyncThunk<any, void, { state: RootState }>(
+  'playlists',
+  async ( _, { getState } ) => {
+    const { accessToken } = getState().spotify;
+    const uri = await axios.get( `${ url }/playlists/${ mainPlaylistId }`, { headers: { Authorization: `Bearer ${ accessToken }` } } )
+      .then( ( { data } ) => {
+        if ( !data ) return;
+        const { uri } = data;
+
+        return uri;
+      } )
+      .catch( ( error ) => console.error( { error } ) );
+
+    return uri;
+  }
+);
+
+export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
+  'track',
+  async ( _, { dispatch, getState } ) => {
+    const { accessToken } = getState().spotify;
+    const track = await axios.get( 'https://api.spotify.com/v1/me/player', { headers: { Authorization: `Bearer ${ accessToken }` } } )
+      .then( ( { data } ) => {
+        // console.log( { data } );
+        if ( !data ) return;
+        const { is_playing: isPlaying, item } = data;
+        const {
+          album,
+          artists,
+          explicit,
+          name: songName,
+          uri,
+        } = item;
+        const { images } = album;
+        const [ albumCover ] = images
+          .sort( ( { height: heightA }, { height: heightB } ) => heightA - heightB )
+          .reverse();
+        const [ artist ] = artists;
+        const { name: artistName } = artist;
+
+        return {
+          albumCover,
+          artistName,
+          explicit,
+          isPlaying,
+          songName,
+          uri,
+        };
+      } )
+      .catch( ( error ) => console.error( { error } ) );
+
+    return track;
+  }
+);
+
+const initialState: Spotify = {
+  accessToken: null,
+  track: null,
+  trackUri: null,
+  deviceId: null,
+  mainPlaylistUri: null,
+};
+
+export const spotifySlice = createSlice( {
+  extraReducers: {
+    'devices/pending': ( state ) => {
+      console.log( 'pending' );
+    },
+    'devices/fulfilled': ( state, { payload } ) => {
+      console.log( 'devices/fulfilled', { payload } );
+      state.deviceId = payload;
+    },
+    'devices/rejected': ( state ) => {
+      console.log( 'rejected' );
+    },
+    'playlists/pending': ( state ) => {
+      console.log( 'pending' );
+    },
+    'playlists/fulfilled': ( state, { payload } ) => {
+      console.log( 'playlists/fulfilled', { payload } );
+      state.mainPlaylistUri = payload;
+    },
+    'playlists/rejected': ( state ) => {
+      console.log( 'rejected' );
+    },
+    'track/pending': ( state ) => {
+      console.log( 'pending' );
+    },
+    'track/fulfilled': ( state, { payload } ) => {
+      console.log( 'track/fulfilled', { payload } );
+      const { uri } = payload;
+
+      state.track = payload;
+      state.trackUri = uri;
+    },
+    'track/rejected': ( state ) => {
+      console.log( 'rejected' );
+    },
+  },
+  initialState,
+  name: 'spotify',
+  reducers: {
+    setAccessToken: ( state, action: PayloadAction<Spotify[ 'accessToken' ]> ) => {
+      const { payload } = action;
+
+      state.accessToken = payload;
+    },
+  },
+} );
+
+export const { setAccessToken } = spotifySlice.actions;
+
+export default spotifySlice.reducer;

@@ -9,10 +9,11 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { SET_JORDAN } from '../redux/actions/app';
+import { SET_AIR, SET_JORDAN } from '../redux/actions/app';
 import { RootState } from '../redux/reducers';
 
 interface Track {
+  albumCover: any;
   artistName: string;
   explicit: boolean;
   songName: string;
@@ -50,19 +51,19 @@ export const SpotifyProvider = ( { children }: Props ) => {
     'Content-Type': 'application/json',
   };
 
-  useEffect( () => {
-    const paramsArray = asPath.slice( 2 )
-      .split( '&' );
-    const paramsMap: any = {};
-
-    paramsArray.forEach( ( param ) => {
-      const [ key, value ] = param.split( '=' );
-
-      paramsMap[ key ] = value;
-    } );
-
-    setAccessToken( paramsMap.access_token );
-  }, [ asPath ] );
+  // useEffect( () => {
+  //   const paramsArray = asPath.slice( 2 )
+  //     .split( '&' );
+  //   const paramsMap: any = {};
+  //
+  //   paramsArray.forEach( ( param ) => {
+  //     const [ key, value ] = param.split( '=' );
+  //
+  //     paramsMap[ key ] = value;
+  //   } );
+  //
+  //   setAccessToken( paramsMap.access_token );
+  // }, [ asPath ] );
 
   useEffect( () => {
     if ( !accessToken ) return;
@@ -91,31 +92,37 @@ export const SpotifyProvider = ( { children }: Props ) => {
 
   useEffect( () => {
     if ( !activeDevice || jordanTransition !== 'COMPLETE' || !playlist ) return;
-    const interval = setInterval( () => {
-      axios.get( 'https://api.spotify.com/v1/me/player', { headers } )
-        .then( ( { data } ) => {
-          // console.log( { data } );
-          if ( !data ) return;
-          const { is_playing: isPlaying, item } = data;
-          const {
-            artists,
-            explicit,
-            name: songName,
-            uri,
-          } = item;
-          const [ artist ] = artists;
-          const { name: artistName } = artist;
-
-          setActiveTrack( {
-            artistName,
-            explicit,
-            songName,
-            uri,
-          } );
-          setActiveTrackUri( uri );
-        } )
-        .catch( ( error ) => console.error( { error } ) );
-    }, 1000 );
+    // const interval = setInterval( () => {
+    //   axios.get( 'https://api.spotify.com/v1/me/player', { headers } )
+    //     .then( ( { data } ) => {
+    //       // console.log( { data } );
+    //       if ( !data ) return;
+    //       const { is_playing: isPlaying, item } = data;
+    //       const {
+    //         album,
+    //         artists,
+    //         explicit,
+    //         name: songName,
+    //         uri,
+    //       } = item;
+    //       const { images } = album;
+    //       const [ albumCover ] = images
+    //         .sort( ( { height: heightA }, { height: heightB } ) => heightA - heightB )
+    //         .reverse();
+    //       const [ artist ] = artists;
+    //       const { name: artistName } = artist;
+    //
+    //       setActiveTrack( {
+    //         albumCover,
+    //         artistName,
+    //         explicit,
+    //         songName,
+    //         uri,
+    //       } );
+    //       setActiveTrackUri( uri );
+    //     } )
+    //     .catch( ( error ) => console.error( { error } ) );
+    // }, 1000 );
 
     axios.put( 'https://api.spotify.com/v1/me/player/play', { context_uri: playlist }, { headers } )
       .catch( ( error ) => console.error( { error } ) );
@@ -129,6 +136,10 @@ export const SpotifyProvider = ( { children }: Props ) => {
     if ( !activeTrackUri ) return;
     const { songName } = activeTrack;
     const [ first, second ] = songName.split( ' ' );
+    const newAir = second
+      ? first.toUpperCase().slice( 0, 7 ).split( '' )
+      : [];
+    if ( !( newAir.length % 2 ) ) { newAir.push( '' ); }
     const newJordan = Array.from( { length: 6 }, () => ' ' );
 
     ( second || first )
@@ -137,6 +148,7 @@ export const SpotifyProvider = ( { children }: Props ) => {
       .split( '' )
       .forEach( ( letter, i ) => { newJordan[ i ] = letter || ' '; } );
 
+    dispatch( { payload: { air: newAir }, type: SET_AIR } );
     dispatch( { payload: { jordan: newJordan }, type: SET_JORDAN } );
   }, [ activeTrackUri ] );
 

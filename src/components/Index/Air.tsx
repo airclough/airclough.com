@@ -1,33 +1,37 @@
 import React, { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { SET_AIR_INDEX, SET_AIR_TRANSITION } from '../../redux/actions/app';
-import { RootState } from '../../redux/reducers';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { setAirIndex, setAirTransition } from '../../redux/reducers/app';
 
 interface LetterProps {
   i: number;
+  length: number;
   letter: string;
 }
 
-const air = 'AIR'.split( '' );
 const interval = 500;
 
-const Letter: FC<LetterProps> = ( { i, letter } ) => {
-  const { airIndex } = useSelector( ( { app }: RootState ) => app );
+const Letter: FC<LetterProps> = ( { i, length, letter } ) => {
+  const { airIndex, airTransition } = useAppSelector( ( { app } ) => app );
+  const { track } = useAppSelector( ( { spotify } ) => spotify );
+  const opacity = airTransition === 'COMPLETE'
+    ? 1
+    : +( airIndex !== null && i <= airIndex );
+  const color = ( track && Math.ceil( length / 2 ) - 1 ) === i ? '#fff' : '#333';
 
   return (
-    <div className="Letter" style={ { opacity: +( airIndex !== null && i <= airIndex ) } }>
+    <div className="Letter" style={ { color, opacity } }>
       { letter }
     </div>
   );
 };
 
 const Air: FC = () => {
-  const { airTransition } = useSelector( ( { app }: RootState ) => app );
-  const dispatch = useDispatch();
+  const { air, airTransition } = useAppSelector( ( { app } ) => app );
+  const dispatch = useAppDispatch();
 
   useEffect( () => {
-    setTimeout( () => dispatch( { payload: { airTransition: 'ACTIVE' }, type: SET_AIR_TRANSITION } ), interval );
+    setTimeout( () => dispatch( setAirTransition( 'ACTIVE' ) ), interval );
   }, [] );
 
   useEffect( () => {
@@ -35,12 +39,9 @@ const Air: FC = () => {
 
     air.forEach( ( _letter, i ) => {
       setTimeout( () => {
-        dispatch( { payload: { airIndex: i }, type: SET_AIR_INDEX } );
+        dispatch( setAirIndex( i ) );
         if ( i === air.length - 1 ) {
-          setTimeout( () => dispatch( {
-            payload: { airTransition: 'COMPLETE' },
-            type: SET_AIR_TRANSITION,
-          } ), interval * 2 );
+          setTimeout( () => dispatch( setAirTransition( 'COMPLETE' ) ), interval * 2 );
         }
       }, i * interval );
     } );
@@ -48,7 +49,7 @@ const Air: FC = () => {
 
   return (
     <div className="Air">
-      <h2>{ air.map( ( letter, i ) => <Letter i={ i } key={ i } letter={ letter } /> ) }</h2>
+      <h2>{ air.map( ( letter, i ) => <Letter i={ i } key={ i } length={ air.length } letter={ letter } /> ) }</h2>
     </div>
   );
 };

@@ -1,29 +1,31 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Air from './Air';
-import JordanLogo from './JordanLogo';
-import { SET_JORDAN, SET_JORDAN_TRANSITION } from '../../redux/actions/app';
-import { RootState } from '../../redux/reducers';
+import AlbumCover from './AlbumCover';
+import Jumpman from './Jumpman';
+import { setJordan, setJordanTransition } from '../../redux/reducers/app';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 interface LettersProps {
+  i: number;
   multiplier: number;
   jordanLetter: string;
 }
 
 const alphabetSansQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ '.split( '' );
-const clough = 'CLOUGH'.split( '' );
 const interval = 2000;
 
-const Letters: FC<LettersProps> = ( { multiplier, jordanLetter } ) => {
+const Letters: FC<LettersProps> = ( { i, jordanLetter, multiplier } ) => {
   const y = alphabetSansQ.indexOf( jordanLetter ) * multiplier;
+  const { track } = useAppSelector( ( { spotify } ) => spotify );
+  const color = ( track && ( i === 2 || i === 3 ) ) ? '#fff' : '#333'
 
   return (
     <div className="Letters">
       {
         alphabetSansQ.map( ( letter ) => <div
           key={ letter }
-          style={ { transform: `translate3d( 0, -${ y }rem, 0 )` } }
+          style={ { color, transform: `translate3d( 0, -${ y }rem, 0 )` } }
         >
           { letter }
         </div> )
@@ -32,10 +34,10 @@ const Letters: FC<LettersProps> = ( { multiplier, jordanLetter } ) => {
   );
 };
 
-const Namesake: FC = () => {
-  const { airTransition, jordan } = useSelector( ( { app }: RootState ) => app );
+const Jordan: FC = () => {
+  const { airTransition, jordan } = useAppSelector( ( { app } ) => app );
   const [ multiplier, setMultiplier ] = useState<number>( 8 );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect( () => {
     if ( typeof window === 'undefined' ) return;
@@ -48,33 +50,34 @@ const Namesake: FC = () => {
 
   useEffect( () => {
     if ( airTransition !== 'COMPLETE' ) return;
-    dispatch( { payload: { jordanTransition: 'ACTIVE' }, type: SET_JORDAN_TRANSITION } );
+    dispatch( setJordanTransition( 'ACTIVE' ) );
 
     setTimeout( () => {
-      dispatch( { payload: { jordan: clough }, type: SET_JORDAN } );
+      dispatch( setJordan( 'CLOUGH'.split( '' ) ) );
     }, interval );
 
-    setTimeout( () => dispatch( {
-      payload: { jordanTransition: 'COMPLETE' },
-      type: SET_JORDAN_TRANSITION,
-    } ), interval + 1000 );
+    setTimeout( () => dispatch( setJordanTransition( 'COMPLETE' ) ), interval + 1000 );
   }, [ airTransition ] );
 
+  console.log( { jordan } );
+
   return (
-    <div className="Namesake">
+    <div className="Jordan">
       <Air />
       <h1 style={ { opacity: +( airTransition === 'COMPLETE' ) } }>
         {
           jordan.map( ( jordanLetter, i ) => <Letters
+            i={ i }
+            jordanLetter={ jordanLetter }
             key={ i }
             multiplier={ multiplier }
-            jordanLetter={ jordanLetter }
           /> )
         }
       </h1>
-      <JordanLogo />
+      <AlbumCover />
+      <Jumpman />
     </div>
   );
 };
 
-export default Namesake;
+export default Jordan;

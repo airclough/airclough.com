@@ -27,7 +27,7 @@
   }
 
   .indexContainer {
-    .Namesake {
+    .Jordan {
       position: relative;
       z-index: 1;
 
@@ -37,6 +37,7 @@
         top: 50%;
         transform: translate3d( 0, -50%, 0 );
         width: 100%;
+        z-index: 1;
 
         h2 {
           align-items: center;
@@ -68,6 +69,7 @@
         justify-content: center;
         position: relative;
         transition: opacity 1s;
+        z-index: 1;
 
         @media ( max-width: $mobileMax ) {
           font-size: 2rem;
@@ -96,7 +98,22 @@
         }
       }
 
-      .JordanLogo {
+      .AlbumCover {
+        height: 288px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate3d( -50%, -50%, 0 );
+        transition: opacity 1s;
+        width: 288px;
+        z-index: 0;
+
+        img {
+          height: inherit;
+        }
+      }
+
+      .Jumpman {
         left: 50%;
         position: absolute;
         top: 50%;
@@ -218,13 +235,38 @@
     }
   }
 
-  .Spotify {
+  .Player {
     bottom: 0;
     left: 0;
     padding: 3rem;
     position: absolute;
-    text-align: center;
     width: 100%;
+
+    .Auth {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .TrackAndControls {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+
+      .controls {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+
+        > div {
+          margin-right: 1.5rem;
+
+          &:last-of-type {
+            margin-right: 0;
+          }
+        }
+      }
+    }
   }
 }
 
