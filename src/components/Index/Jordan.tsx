@@ -5,6 +5,7 @@ import AlbumCover from './AlbumCover';
 import Jumpman from './Jumpman';
 import { setJordan, setJordanTransition } from '../../redux/reducers/app';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { alphabetSansQ } from '../../utils/spotify';
 
 interface LettersProps {
   i: number;
@@ -12,7 +13,6 @@ interface LettersProps {
   jordanLetter: string;
 }
 
-const alphabetSansQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ '.split( '' );
 const interval = 2000;
 
 const Letters: FC<LettersProps> = ( { i, jordanLetter, multiplier } ) => {

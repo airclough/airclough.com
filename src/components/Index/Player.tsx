@@ -9,36 +9,14 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setAirJordan } from '../../redux/reducers/app';
+import { setAirJordan, setModal } from '../../redux/reducers/app';
 import {
   fireCommand,
   getDevices,
-  getPlaylists,
   getTrack,
   setAccessToken,
-  startPlaylist,
 } from '../../redux/reducers/spotify';
-import { getAirJordanViaTrack } from '../../utils';
-
-const authEndpoint = 'https://accounts.spotify.com/authorize';
-const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
-const redirectUri = process.env.NEXT_PUBLIC_ENV === 'production'
-  ? 'https://airclough.com'
-  : 'http://localhost:3000';
-const scopes = [
-  'streaming',
-  'user-modify-playback-state',
-  'user-read-currently-playing',
-  'user-read-playback-state',
-  'user-top-read',
-];
-const queryStringParams = [
-  `client_id=${ clientId }`,
-  `redirect_uri=${ redirectUri }`,
-  'response_type=token',
-  `scope=${ scopes.join( ',' ) }`,
-  'show_dialog=true',
-];
+import { getAirJordanViaTrack } from '../../utils/spotify';
 
 const Track = () => {
   const { track } = useAppSelector( ( { spotify } ) => spotify );
@@ -83,13 +61,16 @@ const TrackAndControls = () => {
 };
 
 const Auth = () => {
-  const href = `${ authEndpoint }?${ queryStringParams.join( '&' ) }`;
+  const dispatch = useAppDispatch();
+  const onClick = () => {
+    dispatch( setModal( 'AUTH' ) );
+  };
 
   return (
     <div className="Auth">
-      <a href={ href }>
+      <div onClick={ onClick }>
         <FontAwesomeIcon icon={ faPlay } />
-      </a>
+      </div>
     </div>
   );
 };
@@ -99,7 +80,6 @@ const Player = () =>  {
   const {
     accessToken,
     deviceId,
-    mainPlaylistUri,
     track,
     trackUri,
   } = useAppSelector( ( { spotify } ) => spotify );
@@ -127,20 +107,15 @@ const Player = () =>  {
   }, [ accessToken ] );
 
   useEffect( () => {
-    if ( !deviceId ) return;
-    dispatch( getPlaylists() );
-  }, [ deviceId ] );
-
-  useEffect( () => {
-    if ( jumpmanTransition !== 'COMPLETE' || !mainPlaylistUri ) return;
+    if ( !deviceId || jumpmanTransition !== 'COMPLETE' ) return;
     const interval = setInterval( () => {
       dispatch( getTrack() );
     }, 1000 );
 
-    dispatch( startPlaylist() );
+    dispatch( setModal( 'PLAYLIST' ) );
 
     return () => clearInterval( interval );
-  }, [ jumpmanTransition, mainPlaylistUri ] );
+  }, [ deviceId, jumpmanTransition ] );
 
   useEffect( () => {
     if ( !track ) return;

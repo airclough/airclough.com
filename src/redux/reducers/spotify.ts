@@ -18,11 +18,10 @@ interface Spotify {
   track: Track | null;
   trackUri: string | null;
   deviceId: string | null;
-  mainPlaylistUri: string | null;
   playing: boolean;
 }
 
-const mainPlaylistId = process.env.NEXT_PUBLIC_SPOTIFY_PLAYLIST_ID;
+
 const url = process.env.NEXT_PUBLIC_SPOTIFY_URL;
 
 export const getDevices = createAsyncThunk<any, void, { state: RootState }>(
@@ -42,23 +41,6 @@ export const getDevices = createAsyncThunk<any, void, { state: RootState }>(
       .catch( ( error ) => console.error( { error } ) );
 
     return id;
-  }
-);
-
-export const getPlaylists = createAsyncThunk<any, void, { state: RootState }>(
-  'getPlaylists',
-  async ( _, { getState } ) => {
-    const { accessToken } = getState().spotify;
-    const uri = await axios.get( `${ url }/playlists/${ mainPlaylistId }`, { headers: { Authorization: `Bearer ${ accessToken }` } } )
-      .then( ( { data } ) => {
-        if ( !data ) return;
-        const { uri } = data;
-
-        return uri;
-      } )
-      .catch( ( error ) => console.error( { error } ) );
-console.log( { uri } )
-    return uri;
   }
 );
 
@@ -103,12 +85,13 @@ export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
 
 export const startPlaylist = createAsyncThunk<any, void, { state: RootState }>(
   'startPlaylist',
-  async ( _, { getState } ) => {
-    const { accessToken, mainPlaylistUri } = getState().spotify;
+  async ( { offset = 0, uri }, { getState } ) => {
+    console.log( 'startPlaylist', { offset, uri } );
+    const { accessToken } = getState().spotify;
 
     await axios.put(
       'https://api.spotify.com/v1/me/player/play',
-      { context_uri: mainPlaylistUri },
+      { context_uri: uri, offset: { position: offset } },
       { headers: { Authorization: `Bearer ${ accessToken }` } }
     ).catch( ( error ) => console.error( { error } ) );
 
@@ -137,7 +120,6 @@ const initialState: Spotify = {
   track: null,
   trackUri: null,
   deviceId: null,
-  mainPlaylistUri: null,
   playing: false,
 };
 
@@ -160,16 +142,6 @@ export const spotifySlice = createSlice( {
       console.log( 'fireCommand/fulfilled' );
     },
     [ fireCommand.rejected ]: () => {
-      console.log( 'rejected' );
-    },
-    [ getPlaylists.pending ]: () => {
-      console.log( 'pending' );
-    },
-    [ getPlaylists.fulfilled ]: ( state, { payload } ) => {
-      console.log( 'getPlaylists/fulfilled', { payload } );
-      state.mainPlaylistUri = payload;
-    },
-    [ getPlaylists.rejected ]: () => {
       console.log( 'rejected' );
     },
     [ startPlaylist.pending ]: () => {

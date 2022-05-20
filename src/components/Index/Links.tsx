@@ -6,9 +6,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
 
-import { RootState } from '../../redux/reducers';
+import { useAppSelector } from '../../redux/hooks';
 
 interface Link {
   href: string;
@@ -43,7 +42,7 @@ const LinkListItem: FC<Link> = ( { href, icon } ) => (
 );
 
 const Links: FC = () => {
-  const { jordanTransition } = useSelector( ( { app }: RootState ) => app );
+  const { jordanTransition } = useAppSelector( ( { app } ) => app );
 
   return (
     <div className={ `Links ${ ( jordanTransition === 'COMPLETE' && 'show' ) || '' }` }>

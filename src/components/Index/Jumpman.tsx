@@ -15,7 +15,7 @@ const Jumpman: FC = () => {
     setJumpmanTransition( 'ACTIVE' );
     setTimeout( () => {
       dispatch( setJumpmanTransition( 'COMPLETE' ) );
-    }, 2000 );
+    }, 4000 );
   }, [ jordanTransition ] );
 
   return (

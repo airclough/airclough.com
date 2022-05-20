@@ -7,6 +7,7 @@ interface App {
   jordan: string[];
   jordanTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
   jumpmanTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
+  modal: 'HIDDEN' | 'AUTH' | 'PLAYLIST';
 }
 
 const initialState: App = {
@@ -16,6 +17,7 @@ const initialState: App = {
   jordan: 'JORDAN'.split( '' ),
   jordanTransition: 'PAUSED',
   jumpmanTransition: 'PAUSED',
+  modal: 'HIDDEN',
 };
 
 export const appSlice = createSlice( {
@@ -63,6 +65,11 @@ export const appSlice = createSlice( {
 
       state.jumpmanTransition = payload;
     },
+    setModal: ( state, action: PayloadAction<App[ 'modal' ]> ) => {
+      const { payload } = action;
+
+      state.modal = payload;
+    },
   },
 } );
 
@@ -75,6 +82,7 @@ export const {
   setJordan,
   setJordanTransition,
   setJumpmanTransition,
+  setModal,
 } = appSlice.actions;
 
 export default appSlice.reducer;
