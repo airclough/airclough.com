@@ -59,8 +59,6 @@ const Jordan: FC = () => {
     setTimeout( () => dispatch( setJordanTransition( 'COMPLETE' ) ), interval + 1000 );
   }, [ airTransition ] );
 
-  console.log( { jordan } );
-
   return (
     <div className="Jordan">
       <Air />

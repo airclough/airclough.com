@@ -10,7 +10,14 @@ import React, { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setAirJordan } from '../../redux/reducers/app';
-import { getDevices, getPlaylists, getTrack, setAccessToken } from '../../redux/reducers/spotify';
+import {
+  fireCommand,
+  getDevices,
+  getPlaylists,
+  getTrack,
+  setAccessToken,
+  startPlaylist,
+} from '../../redux/reducers/spotify';
 import { getAirJordanViaTrack } from '../../utils';
 
 const authEndpoint = 'https://accounts.spotify.com/authorize';
@@ -33,22 +40,42 @@ const queryStringParams = [
   'show_dialog=true',
 ];
 
+const Track = () => {
+  const { track } = useAppSelector( ( { spotify } ) => spotify );
+  const { albumCover, artistName, songName } = track;
+  const { url } = albumCover;
+
+  return (
+    <div className="Track">
+      <div className="albumCoverContainer" style={ { backgroundImage: `url(${ url })` } } />
+      <div className="artistAndSong">
+        <div className="artist">{ artistName }</div>
+        <div className="song">{ songName }</div>
+      </div>
+    </div>
+  );
+};
+
 const TrackAndControls = () => {
+  const { playing, track } = useAppSelector( ( { spotify } ) => spotify );
   const dispatch = useAppDispatch();
-  const onClickPrevious = () => {
-
-  };
-  const onClickNext = () => {
-
-  };
+  const onClick = ( command: string ) => {
+    dispatch( fireCommand( command ) );
+  }
 
   return (
     <div className="TrackAndControls">
-      <div className="track"></div>
+      { track && <Track /> }
       <div className="controls">
-        <div onClick={ onClickPrevious }><FontAwesomeIcon icon={ faBackwardStep } /></div>
-        <div>{ <FontAwesomeIcon icon={ faPlay } /> }</div>
-        <div onClick={ onClickNext }><FontAwesomeIcon icon={ faForwardStep } /></div>
+        <div onClick={ () => onClick( 'previous' ) }><FontAwesomeIcon icon={ faBackwardStep } /></div>
+        <div>
+          {
+            playing
+              ? <FontAwesomeIcon icon={ faPause } onClick={ () => onClick( 'pause' ) } />
+              : <FontAwesomeIcon icon={ faPlay } onClick={ () => onClick( 'play' ) } />
+          }
+        </div>
+        <div onClick={ () => onClick( 'next' ) }><FontAwesomeIcon icon={ faForwardStep } /></div>
       </div>
       <div className="nsfw"></div>
     </div>
@@ -69,7 +96,13 @@ const Auth = () => {
 
 const Player = () =>  {
   const { jumpmanTransition } = useAppSelector( ( { app } ) => app );
-  const { accessToken, deviceId, mainPlaylistUri, track, trackUri } = useAppSelector( ( { spotify } ) => spotify );
+  const {
+    accessToken,
+    deviceId,
+    mainPlaylistUri,
+    track,
+    trackUri,
+  } = useAppSelector( ( { spotify } ) => spotify );
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { asPath } = router;
@@ -100,11 +133,11 @@ const Player = () =>  {
 
   useEffect( () => {
     if ( jumpmanTransition !== 'COMPLETE' || !mainPlaylistUri ) return;
-
     const interval = setInterval( () => {
-      // if ( !track ) clearInterval( interval );
       dispatch( getTrack() );
     }, 1000 );
+
+    dispatch( startPlaylist() );
 
     return () => clearInterval( interval );
   }, [ jumpmanTransition, mainPlaylistUri ] );
@@ -118,7 +151,7 @@ const Player = () =>  {
 
   return (
     <div className="Player" style={ { opacity: +( jumpmanTransition === 'COMPLETE' ) } }>
-      { track ? <TrackAndControls /> : <Auth /> }
+      { deviceId ? <TrackAndControls /> : <Auth /> }
     </div>
   );
 };

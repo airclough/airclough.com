@@ -1,5 +1,0 @@
-export const SET_AIR = 'SET_AIR';
-export const SET_AIR_INDEX = 'SET_AIR_INDEX';
-export const SET_AIR_TRANSITION = 'SET_AIR_TRANSITION';
-export const SET_JORDAN = 'SET_JORDAN';
-export const SET_JORDAN_TRANSITION = 'SET_JORDAN_TRANSITION';

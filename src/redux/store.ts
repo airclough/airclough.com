@@ -1,16 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
 
-import app from './reducers/app';
-import spotify from './reducers/spotify';
+import app, { resetState as resetAppState } from './reducers/app';
+import spotify, { resetState as resetSpotifyState } from './reducers/spotify';
+
+const listenerMiddleware = createListenerMiddleware();
+
+listenerMiddleware.startListening( {
+  effect: async ( action, { dispatch } ) => {
+    dispatch( resetAppState() );
+    dispatch( resetSpotifyState() );
+  },
+  type: 'resetState',
+} );
 
 export const store = configureStore( {
+  middleware: ( getDefaultMiddleware ) =>getDefaultMiddleware().prepend( listenerMiddleware.middleware ),
   reducer: {
     app,
     spotify,
   },
 } );
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;

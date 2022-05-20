@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import Eth from '../src/components/Index/Eth';
 import Jordan from '../src/components/Index/Jordan';
 import QuoteAndLinks from '../src/components/Index/QuoteAndLinks';
-import Spotify from '../src/components/Index/Spotify';
+import Player from '../src/components/Index/Player';
 
 const Index: FC = () => (
   <div className="Index">
@@ -12,7 +12,7 @@ const Index: FC = () => (
       <Jordan />
       <QuoteAndLinks />
     </div>
-    <Spotify />
+    <Player />
   </div>
 );
 

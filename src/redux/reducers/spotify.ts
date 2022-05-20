@@ -19,13 +19,14 @@ interface Spotify {
   trackUri: string | null;
   deviceId: string | null;
   mainPlaylistUri: string | null;
+  playing: boolean;
 }
 
 const mainPlaylistId = process.env.NEXT_PUBLIC_SPOTIFY_PLAYLIST_ID;
 const url = process.env.NEXT_PUBLIC_SPOTIFY_URL;
 
 export const getDevices = createAsyncThunk<any, void, { state: RootState }>(
-  'devices',
+  'getDevices',
   async ( _, { getState } ) => {
     const { accessToken } = getState().spotify;
     const id = await axios.get( `${ url }/me/player/devices`, { headers: { Authorization: `Bearer ${ accessToken }` } } )
@@ -45,7 +46,7 @@ export const getDevices = createAsyncThunk<any, void, { state: RootState }>(
 );
 
 export const getPlaylists = createAsyncThunk<any, void, { state: RootState }>(
-  'playlists',
+  'getPlaylists',
   async ( _, { getState } ) => {
     const { accessToken } = getState().spotify;
     const uri = await axios.get( `${ url }/playlists/${ mainPlaylistId }`, { headers: { Authorization: `Bearer ${ accessToken }` } } )
@@ -56,13 +57,13 @@ export const getPlaylists = createAsyncThunk<any, void, { state: RootState }>(
         return uri;
       } )
       .catch( ( error ) => console.error( { error } ) );
-
+console.log( { uri } )
     return uri;
   }
 );
 
 export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
-  'track',
+  'getTrack',
   async ( _, { dispatch, getState } ) => {
     const { accessToken } = getState().spotify;
     const track = await axios.get( 'https://api.spotify.com/v1/me/player', { headers: { Authorization: `Bearer ${ accessToken }` } } )
@@ -94,8 +95,40 @@ export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
         };
       } )
       .catch( ( error ) => console.error( { error } ) );
+    if ( !track ) dispatch( { type: 'resetState' } );
 
     return track;
+  }
+);
+
+export const startPlaylist = createAsyncThunk<any, void, { state: RootState }>(
+  'startPlaylist',
+  async ( _, { getState } ) => {
+    const { accessToken, mainPlaylistUri } = getState().spotify;
+
+    await axios.put(
+      'https://api.spotify.com/v1/me/player/play',
+      { context_uri: mainPlaylistUri },
+      { headers: { Authorization: `Bearer ${ accessToken }` } }
+    ).catch( ( error ) => console.error( { error } ) );
+
+    return true;
+  }
+);
+
+export const fireCommand = createAsyncThunk<any, void, { state: RootState }>(
+  'fireCommand',
+  async ( command, { getState } ) => {
+    const { accessToken } = getState().spotify;
+    const pausePlay = [ 'pause', 'play' ].indexOf( command ) >= 0;
+
+    await axios[ pausePlay ? 'put' : 'post' ](
+      `https://api.spotify.com/v1/me/player/${ command }`,
+      {},
+      { headers: { Authorization: `Bearer ${ accessToken }` } }
+    ).catch( ( error ) => console.error( { error } ) );
+
+    return true;
   }
 );
 
@@ -105,47 +138,72 @@ const initialState: Spotify = {
   trackUri: null,
   deviceId: null,
   mainPlaylistUri: null,
+  playing: false,
 };
 
 export const spotifySlice = createSlice( {
   extraReducers: {
-    'devices/pending': ( state ) => {
+    [ getDevices.pending ]: () => {
       console.log( 'pending' );
     },
-    'devices/fulfilled': ( state, { payload } ) => {
+    [ getDevices.fulfilled ]: ( state, { payload } ) => {
       console.log( 'devices/fulfilled', { payload } );
       state.deviceId = payload;
     },
-    'devices/rejected': ( state ) => {
+    [ getDevices.rejected ]: () => {
       console.log( 'rejected' );
     },
-    'playlists/pending': ( state ) => {
+    [ fireCommand.pending ]: () => {
       console.log( 'pending' );
     },
-    'playlists/fulfilled': ( state, { payload } ) => {
-      console.log( 'playlists/fulfilled', { payload } );
+    [ fireCommand.fulfilled ]: () => {
+      console.log( 'fireCommand/fulfilled' );
+    },
+    [ fireCommand.rejected ]: () => {
+      console.log( 'rejected' );
+    },
+    [ getPlaylists.pending ]: () => {
+      console.log( 'pending' );
+    },
+    [ getPlaylists.fulfilled ]: ( state, { payload } ) => {
+      console.log( 'getPlaylists/fulfilled', { payload } );
       state.mainPlaylistUri = payload;
     },
-    'playlists/rejected': ( state ) => {
+    [ getPlaylists.rejected ]: () => {
       console.log( 'rejected' );
     },
-    'track/pending': ( state ) => {
+    [ startPlaylist.pending ]: () => {
       console.log( 'pending' );
     },
-    'track/fulfilled': ( state, { payload } ) => {
-      console.log( 'track/fulfilled', { payload } );
-      const { uri } = payload;
+    [ startPlaylist.fulfilled ]: ( state, { payload } ) => {
+      console.log( 'startPlaylist/fulfilled', { payload } );
+    },
+    [ startPlaylist.rejected ]: () => {
+      console.log( 'rejected' );
+    },
+    [ getTrack.pending ]: () => {
+      console.log( 'pending' );
+    },
+    [ getTrack.fulfilled ]: ( state, { payload } ) => {
+      if ( !payload ) return;
+      const { isPlaying, uri } = payload;
 
+      state.playing = isPlaying;
       state.track = payload;
       state.trackUri = uri;
     },
-    'track/rejected': ( state ) => {
+    [ getTrack.rejected ]: () => {
       console.log( 'rejected' );
     },
   },
   initialState,
   name: 'spotify',
   reducers: {
+    resetState: ( state ) => {
+      state.playing = false;
+      state.track = null;
+      state.trackUri = null;
+    },
     setAccessToken: ( state, action: PayloadAction<Spotify[ 'accessToken' ]> ) => {
       const { payload } = action;
 
@@ -154,6 +212,6 @@ export const spotifySlice = createSlice( {
   },
 } );
 
-export const { setAccessToken } = spotifySlice.actions;
+export const { resetState, setAccessToken } = spotifySlice.actions;
 
 export default spotifySlice.reducer;

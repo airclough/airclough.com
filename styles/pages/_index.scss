@@ -236,10 +236,12 @@
   }
 
   .Player {
+    background: #fff;
     bottom: 0;
     left: 0;
-    padding: 3rem;
+    padding: 1.5rem;
     position: absolute;
+    transition: opacity 1s;
     width: 100%;
 
     .Auth {
@@ -251,15 +253,47 @@
     .TrackAndControls {
       align-items: center;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+
+      > div {
+        width: 33.3333333333%;
+      }
+
+      .Track {
+        align-items: center;
+        display: flex;
+
+        .albumCoverContainer {
+          background: #333;
+          background-size: cover;
+          height: 64px;
+          margin-right: 1.5rem;
+          overflow: hidden;
+          width: 64px;
+        }
+
+        .artistAndSong {
+          .artist {
+            color: #999;
+            font-size: .75rem;
+            margin-bottom: .25rem;
+          }
+        }
+      }
 
       .controls {
         align-items: center;
         display: flex;
+        flex-grow: 2;
         justify-content: center;
 
         > div {
           margin-right: 1.5rem;
+
+          &:hover {
+            color: $primary;
+            cursor: pointer;
+          }
 
           &:last-of-type {
             margin-right: 0;

@@ -22,6 +22,10 @@ export const appSlice = createSlice( {
   initialState,
   name: 'app',
   reducers: {
+    resetState: ( state ) => {
+      state.air = initialState.air;
+      state.jordan = 'CLOUGH'.split( '' );
+    },
     setAir: ( state, action: PayloadAction<App[ 'air' ]> ) => {
       const { payload } = action;
 
@@ -63,6 +67,7 @@ export const appSlice = createSlice( {
 } );
 
 export const {
+  resetState,
   setAir,
   setAirIndex,
   setAirJordan,
