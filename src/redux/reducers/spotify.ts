@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import type { RootState } from '../store';
-// import type { Category, Entity } from '../../types/index.d';
 
 interface Track {
   albumCover: any;
   artistName: string;
   explicit: boolean;
   isPlaying: boolean;
+  progress: number;
   songName: string;
   uri: string;
 }
@@ -20,7 +20,6 @@ interface Spotify {
   deviceId: string | null;
   playing: boolean;
 }
-
 
 const url = process.env.NEXT_PUBLIC_SPOTIFY_URL;
 
@@ -52,10 +51,11 @@ export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
       .then( ( { data } ) => {
         // console.log( { data } );
         if ( !data ) return;
-        const { is_playing: isPlaying, item } = data;
+        const { is_playing: isPlaying, item, progress_ms } = data;
         const {
           album,
           artists,
+          duration_ms,
           explicit,
           name: songName,
           uri,
@@ -66,12 +66,14 @@ export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
           .reverse();
         const [ artist ] = artists;
         const { name: artistName } = artist;
+        const progress = progress_ms / duration_ms * 100;
 
         return {
           albumCover,
           artistName,
           explicit,
           isPlaying,
+          progress,
           songName,
           uri,
         };
@@ -85,7 +87,7 @@ export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
 
 export const startPlaylist = createAsyncThunk<any, void, { state: RootState }>(
   'startPlaylist',
-  async ( { offset = 0, uri }, { getState } ) => {
+  async ( { offset, uri }, { getState } ) => {
     console.log( 'startPlaylist', { offset, uri } );
     const { accessToken } = getState().spotify;
 

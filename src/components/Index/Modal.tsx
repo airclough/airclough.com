@@ -55,7 +55,7 @@ const SpotifyAuth = () => {
 
 const SpotifyPlaylist = () => {
   const dispatch = useAppDispatch();
-  const onClickRandom = ( e ) => {
+  const onClick = ( e ) => {
     e.preventDefault();
 
     dispatch( startPlaylist( getRandomNintiesAlbum() ) );
@@ -65,17 +65,17 @@ const SpotifyPlaylist = () => {
   return (
     <div className="SpotifyPlaylist">
       <h2>NSFW Warning</h2>
-      <p>You are about to spin a custom playlist that is curated with tracks rocked during my gym sessions. The lyrics are NSFW even <strong>with</strong> a pair of noise-canceling headphones that trap all sound.</p>
-      <p>If you are my employer, a recruiter, or a potential future employer, can I suggest a <a href="#" onClick={ onClickRandom }>random rock album from the 90's</a>?</p>
+      <p>You are about to play tracks from a custom playlist heavily inspired by the question <span>"What are you currently listening to at the gym?"</span>. The lyrics are NSFW even with a pair of noise-canceling headphones that trap all sound.</p>
+      <p>If you are my employer, a recruiter, or a potential future employer, can I suggest a <a href="#" onClick={ onClick }>random rock album from the 90's</a>?</p>
       <div className="buttonContainer">
         <div onClick={ () => { dispatch( startPlaylist( aircloughPlaylist ) ); dispatch( setModal( 'HIDDEN' ) ); } }>
           <button className="btn btn-primary" type="button">
             I understand
           </button>
         </div>
-        <div onClick={ () => dispatch( setModal( 'HIDDEN' ) ) }>
+        <div onClick={ onClick }>
           <button className="btn btn-outline-primary" type="button">
-            No thanks, I'll chose my own
+            Take me back to the 90's
           </button>
         </div>
       </div>

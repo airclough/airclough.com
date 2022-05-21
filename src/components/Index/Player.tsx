@@ -2,7 +2,8 @@ import {
   faBackwardStep,
   faForwardStep,
   faPause,
-  faPlay
+  faPlay,
+  faShuffle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
@@ -15,8 +16,20 @@ import {
   getDevices,
   getTrack,
   setAccessToken,
+  startPlaylist,
 } from '../../redux/reducers/spotify';
-import { getAirJordanViaTrack } from '../../utils/spotify';
+import { getAirJordan, getRandomNintiesAlbum } from '../../utils/spotify';
+
+const Progress = () => {
+  const { track } = useAppSelector( ( { spotify } ) => spotify );
+  const { progress } = track || {};
+
+  return (
+    <div className="Progress">
+      <div style={ { width: `${ progress || 0 }%` } }></div>
+    </div>
+  );
+};
 
 const Track = () => {
   const { track } = useAppSelector( ( { spotify } ) => spotify );
@@ -37,25 +50,31 @@ const Track = () => {
 const TrackAndControls = () => {
   const { playing, track } = useAppSelector( ( { spotify } ) => spotify );
   const dispatch = useAppDispatch();
-  const onClick = ( command: string ) => {
-    dispatch( fireCommand( command ) );
-  }
+  const onClickCommand = ( command: string ) => dispatch( fireCommand( command ) );
+  const onClickShuffle = () => dispatch( startPlaylist( getRandomNintiesAlbum() ) );
 
   return (
     <div className="TrackAndControls">
-      { track && <Track /> }
+      <div className="track">
+        { track && <Track /> }
+      </div>
       <div className="controls">
-        <div onClick={ () => onClick( 'previous' ) }><FontAwesomeIcon icon={ faBackwardStep } /></div>
+        <div onClick={ () => onClickCommand( 'previous' ) }><FontAwesomeIcon icon={ faBackwardStep } /></div>
         <div>
           {
             playing
-              ? <FontAwesomeIcon icon={ faPause } onClick={ () => onClick( 'pause' ) } />
-              : <FontAwesomeIcon icon={ faPlay } onClick={ () => onClick( 'play' ) } />
+              ? <FontAwesomeIcon icon={ faPause } onClick={ () => onClickCommand( 'pause' ) } />
+              : <FontAwesomeIcon icon={ faPlay } onClick={ () => onClickCommand( 'play' ) } />
           }
         </div>
-        <div onClick={ () => onClick( 'next' ) }><FontAwesomeIcon icon={ faForwardStep } /></div>
+        <div onClick={ () => onClickCommand( 'next' ) }><FontAwesomeIcon icon={ faForwardStep } /></div>
       </div>
-      <div className="nsfw"></div>
+      <div className="shuffle">
+        <div>
+          <FontAwesomeIcon icon={ faShuffle } onClick={ () => onClickShuffle() } />
+        </div>
+      </div>
+      <Progress />
     </div>
   );
 };
@@ -119,7 +138,7 @@ const Player = () =>  {
 
   useEffect( () => {
     if ( !track ) return;
-    const { air, jordan } = getAirJordanViaTrack( track );
+    const { air, jordan } = getAirJordan( track );
 
     dispatch( setAirJordan( { air, jordan } ) );
   }, [ track ] );

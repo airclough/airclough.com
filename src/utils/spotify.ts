@@ -1,6 +1,6 @@
 export const alphabetSansQ = 'ABCDEFGHIJKLMNOPRSTUVWXYZ '.split( '' );
 
-export const getAirJordanViaTrack = ( track ) => {
+export const getAirJordan = ( track ) => {
   const { songName } = track;
   const [ first, second ] = songName.split( ' ' );
   const air = second
@@ -28,7 +28,7 @@ export const aircloughPlaylist = {
 const nintiesAlbums = [
   {
     name: 'Dookie',
-    offset: 1,
+    offset: 3,
     uri: 'spotify:album:4uG8q3GPuWHQlRbswMIRS6',
   },
   {
@@ -58,7 +58,7 @@ const nintiesAlbums = [
   },
   {
     name: 'The Downward Spiral',
-    offset: 10,
+    offset: 13,
     uri: 'spotify:album:5I7lLu8xXJfGRdFUqHaLQU',
   },
   {
