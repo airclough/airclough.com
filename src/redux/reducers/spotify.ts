@@ -15,6 +15,7 @@ interface Track {
 
 interface Spotify {
   accessToken: string | null;
+  interval: any | null;
   track: Track | null;
   trackUri: string | null;
   deviceId: string | null;
@@ -23,10 +24,11 @@ interface Spotify {
 
 const url = process.env.NEXT_PUBLIC_SPOTIFY_URL;
 
-export const getDevices = createAsyncThunk<any, void, { state: RootState }>(
+export const getDevices = createAsyncThunk<any, void, { state: any }>(
   'getDevices',
   async ( _, { getState } ) => {
-    const { accessToken } = getState().spotify;
+    const { spotify } = getState();
+    const { accessToken } = spotify;
     const id = await axios.get( `${ url }/me/player/devices`, { headers: { Authorization: `Bearer ${ accessToken }` } } )
       .then( ( { data } ) => {
         if ( !data ) return;
@@ -43,15 +45,17 @@ export const getDevices = createAsyncThunk<any, void, { state: RootState }>(
   }
 );
 
-export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
+const getTrack = createAsyncThunk<any, void, { state: any }>(
   'getTrack',
   async ( _, { dispatch, getState } ) => {
-    const { accessToken } = getState().spotify;
+    const { spotify } = getState();
+    const { accessToken } = spotify;
     const track = await axios.get( 'https://api.spotify.com/v1/me/player', { headers: { Authorization: `Bearer ${ accessToken }` } } )
       .then( ( { data } ) => {
         // console.log( { data } );
-        if ( !data ) return;
+        if ( !data ) return null;
         const { is_playing: isPlaying, item, progress_ms } = data;
+        if ( !item ) return {};
         const {
           album,
           artists,
@@ -81,15 +85,33 @@ export const getTrack = createAsyncThunk<any, void, { state: RootState }>(
       .catch( ( error ) => console.error( { error } ) );
     if ( !track ) dispatch( { type: 'resetState' } );
 
-    return track;
+    return track && track.isPlaying ? track : null;
+  },
+  {
+    condition: ( _, { getState } ) => {
+      const { spotify } = getState();
+      const { deviceId } = spotify;
+      if ( !deviceId ) return false;
+    },
+  },
+);
+
+export const ping = createAsyncThunk<any, void, { state: any }>(
+  'ping',
+  async ( _, { dispatch } ) => {
+    const interval = setInterval( () => {
+      dispatch( getTrack() );
+    }, 1000 );
+
+    return interval;
   }
 );
 
-export const startPlaylist = createAsyncThunk<any, void, { state: RootState }>(
+export const startPlaylist = createAsyncThunk<any, void, { state: any }>(
   'startPlaylist',
   async ( { offset, uri }, { getState } ) => {
-    console.log( 'startPlaylist', { offset, uri } );
-    const { accessToken } = getState().spotify;
+    const { spotify } = getState();
+    const { accessToken } = spotify;
 
     await axios.put(
       'https://api.spotify.com/v1/me/player/play',
@@ -101,10 +123,11 @@ export const startPlaylist = createAsyncThunk<any, void, { state: RootState }>(
   }
 );
 
-export const fireCommand = createAsyncThunk<any, void, { state: RootState }>(
+export const fireCommand = createAsyncThunk<any, void, { state: any }>(
   'fireCommand',
-  async ( command, { getState } ) => {
-    const { accessToken } = getState().spotify;
+  async ( command, { dispatch, getState } ) => {
+    const { spotify } = getState();
+    const { accessToken } = spotify;
     const pausePlay = [ 'pause', 'play' ].indexOf( command ) >= 0;
 
     await axios[ pausePlay ? 'put' : 'post' ](
@@ -112,6 +135,7 @@ export const fireCommand = createAsyncThunk<any, void, { state: RootState }>(
       {},
       { headers: { Authorization: `Bearer ${ accessToken }` } }
     ).catch( ( error ) => console.error( { error } ) );
+    if ( command === 'pause' ) dispatch( { type: 'resetState' } );
 
     return true;
   }
@@ -119,6 +143,7 @@ export const fireCommand = createAsyncThunk<any, void, { state: RootState }>(
 
 const initialState: Spotify = {
   accessToken: null,
+  interval: null,
   track: null,
   trackUri: null,
   deviceId: null,
@@ -145,6 +170,10 @@ export const spotifySlice = createSlice( {
     },
     [ fireCommand.rejected ]: () => {
       console.log( 'rejected' );
+    },
+    [ ping.fulfilled ]: ( state, { payload } ) => {
+      console.log( 'ping/fulfilled' );
+      state.interval = payload;
     },
     [ startPlaylist.pending ]: () => {
       console.log( 'pending' );
@@ -174,6 +203,8 @@ export const spotifySlice = createSlice( {
   name: 'spotify',
   reducers: {
     resetState: ( state ) => {
+      clearInterval( state.interval );
+      state.deviceId = null;
       state.playing = false;
       state.track = null;
       state.trackUri = null;

@@ -101,6 +101,7 @@
       .AlbumCover {
         height: 288px;
         left: 50%;
+        overflow: hidden;
         position: absolute;
         top: 50%;
         transform: translate3d( -50%, -50%, 0 );
@@ -108,8 +109,15 @@
         width: 288px;
         z-index: 0;
 
-        img {
+        .albumCover {
+          background-color: #fff;
+          background-size: cover;
           height: inherit;
+          left: 0;
+          position: absolute;
+          top: 0;
+          transition: transform .5s;
+          width: inherit;
         }
       }
 
@@ -162,6 +170,7 @@
       .Quote {
         margin-bottom: 3rem;
         min-height: 3rem;
+        transition: opacity 1s;
 
         p {
           color: #ccc;
@@ -250,6 +259,20 @@
       display: flex;
       height: inherit;
       justify-content: center;
+
+      > div {
+        animation-delay: 5s;
+        animation-direction: alternate;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+        animation-name: shake;
+        width: 1rem;
+
+        &:hover {
+          color: $primary;
+          cursor: pointer;
+        }
+      }
     }
 
     .TrackAndControls {
@@ -281,6 +304,11 @@
           }
 
           .artistAndSong {
+            > div {
+              text-overflow: ellipsis;
+              width: 100%;
+            }
+
             .artist {
               color: #999;
               font-size: .75rem;
@@ -351,7 +379,6 @@
     left: 0;
     position: absolute;
     top: 0;
-    // transition: opacity .5s;
     width: 100%;
     z-index: 1000;
 
@@ -366,8 +393,9 @@
 
       .content {
         background: #fff;
-        border: 1px solid #ccc;
+        // border: 1px solid #ccc;
         border-radius: .25rem;
+        box-shadow: 0 0 2rem rgba( 0, 0, 0, .2 );
         padding: 3rem;
         text-align: center;
         width: 30rem;
@@ -407,4 +435,13 @@
   50% { transform: rotate( -225deg ); }
   80% { opacity: .05; transform: rotate( -90deg ); }
   100% { opacity: 0; transform: rotate( -90deg ) translate3d( -50vh, 0, 0 ); }
+}
+
+@keyframes shake {
+  0% { transform: scale( 2 ) skewX( -15deg ); }
+  1% { transform: scale( 2 ) skewX( 15deg ); }
+  2% { transform: scale( 2 ) skewX( -15deg ); }
+  3% { transform: scale( 2 ) skewX( 15deg ); }
+  4% { transform: scale( 1 ) skewX( 0deg ); }
+  100% { transform: scale( 1) skewX( 0deg ); }
 }

@@ -14,7 +14,7 @@ import { setAirJordan, setModal } from '../../redux/reducers/app';
 import {
   fireCommand,
   getDevices,
-  getTrack,
+  ping,
   setAccessToken,
   startPlaylist,
 } from '../../redux/reducers/spotify';
@@ -127,13 +127,8 @@ const Player = () =>  {
 
   useEffect( () => {
     if ( !deviceId || jumpmanTransition !== 'COMPLETE' ) return;
-    const interval = setInterval( () => {
-      dispatch( getTrack() );
-    }, 1000 );
-
+    dispatch( ping() );
     dispatch( setModal( 'PLAYLIST' ) );
-
-    return () => clearInterval( interval );
   }, [ deviceId, jumpmanTransition ] );
 
   useEffect( () => {
