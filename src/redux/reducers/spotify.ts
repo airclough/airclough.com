@@ -52,7 +52,6 @@ const getTrack = createAsyncThunk<any, void, { state: any }>(
     const options = { headers: { Authorization: `Bearer ${ accessToken }` } };
     const track = await axios.get( 'https://api.spotify.com/v1/me/player', options )
       .then( ( { data } ) => {
-        // console.log( { data } );
         if ( !data ) return null;
         const { is_playing: isPlaying, item, progress_ms } = data;
         if ( !item ) return {};
@@ -107,7 +106,7 @@ export const ping = createAsyncThunk<any, void, { state: any }>(
   },
 );
 
-export const startPlaylist = createAsyncThunk<any, void, { state: any }>(
+export const startPlaylist = createAsyncThunk<boolean, any, { state: any }>(
   'startPlaylist',
   async ( { offset, uri }, { getState } ) => {
     const { spotify } = getState();
@@ -123,7 +122,7 @@ export const startPlaylist = createAsyncThunk<any, void, { state: any }>(
   },
 );
 
-export const fireCommand = createAsyncThunk<any, void, { state: any }>(
+export const fireCommand = createAsyncThunk<boolean, any, { state: any }>(
   'fireCommand',
   async ( command, { dispatch, getState } ) => {
     const { spotify } = getState();
@@ -152,22 +151,22 @@ const initialState: Spotify = {
 
 export const spotifySlice = createSlice( {
   extraReducers: {
-    [ getDevices.fulfilled ]: ( state, { payload } ) => {
+    'getDevices/fulfilled': ( state, { payload } ) => {
       state.deviceId = payload;
     },
-    [ getDevices.rejected ]: () => {
+    'getDevices/rejected': () => {
       console.log( 'getDevices.rejected' );
     },
-    [ fireCommand.rejected ]: () => {
+    'fireCommand/rejected': () => {
       console.log( 'fireCommand.rejected' );
     },
-    [ ping.fulfilled ]: ( state, { payload } ) => {
+    'ping/fulfilled': ( state, { payload } ) => {
       state.interval = payload;
     },
-    [ startPlaylist.rejected ]: () => {
+    'startPlaylist/rejected': () => {
       console.log( 'startPlaylist.rejected' );
     },
-    [ getTrack.fulfilled ]: ( state, { payload } ) => {
+    'getTrack/fulfilled': ( state, { payload } ) => {
       if ( !payload ) return;
       const { isPlaying, uri } = payload;
 
@@ -175,7 +174,7 @@ export const spotifySlice = createSlice( {
       state.track = payload;
       state.trackUri = uri;
     },
-    [ getTrack.rejected ]: () => {
+    'getTrack/rejected': () => {
       console.log( 'getTrack.rejected' );
     },
   },
