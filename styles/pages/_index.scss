@@ -105,7 +105,6 @@
         position: absolute;
         top: 50%;
         transform: translate3d( -50%, -50%, 0 );
-        transition: opacity 1s;
         width: 288px;
         z-index: 0;
 
@@ -170,7 +169,6 @@
       .Quote {
         margin-bottom: 3rem;
         min-height: 3rem;
-        transition: opacity 1s;
 
         p {
           color: #ccc;
@@ -253,6 +251,10 @@
     position: absolute;
     transition: opacity 1s;
     width: 100%;
+
+    @media ( max-width: $mobileMax ) {
+      display: none;
+    }
 
     .Auth {
       align-items: center;
@@ -393,7 +395,6 @@
 
       .content {
         background: #fff;
-        // border: 1px solid #ccc;
         border-radius: .25rem;
         box-shadow: 0 0 2rem rgba( 0, 0, 0, .2 );
         padding: 3rem;
@@ -403,6 +404,7 @@
         h2 {
           font-size: 1.25rem;
           font-weight: 300;
+          line-height: 1.5rem;
           margin-bottom: 1.5rem;
         }
 

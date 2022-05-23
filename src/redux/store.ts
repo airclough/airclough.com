@@ -6,7 +6,7 @@ import spotify, { resetState as resetSpotifyState } from './reducers/spotify';
 const listenerMiddleware = createListenerMiddleware();
 
 listenerMiddleware.startListening( {
-  effect: async ( action, { dispatch } ) => {
+  effect: async ( _, { dispatch } ) => {
     dispatch( resetAppState() );
     dispatch( resetSpotifyState() );
   },
@@ -14,7 +14,7 @@ listenerMiddleware.startListening( {
 } );
 
 export const store = configureStore( {
-  middleware: ( getDefaultMiddleware ) =>getDefaultMiddleware().prepend( listenerMiddleware.middleware ),
+  middleware: ( getDefaultMiddleware ) => getDefaultMiddleware().prepend( listenerMiddleware.middleware ),
   reducer: {
     app,
     spotify,

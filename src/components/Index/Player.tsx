@@ -100,7 +100,6 @@ const Player = () =>  {
     accessToken,
     deviceId,
     track,
-    trackUri,
   } = useAppSelector( ( { spotify } ) => spotify );
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -126,9 +125,15 @@ const Player = () =>  {
   }, [ accessToken ] );
 
   useEffect( () => {
-    if ( !deviceId || jumpmanTransition !== 'COMPLETE' ) return;
-    dispatch( ping() );
-    dispatch( setModal( 'PLAYLIST' ) );
+    if ( jumpmanTransition !== 'COMPLETE' ) return;
+
+    if ( deviceId ) {
+      dispatch( ping() );
+      dispatch( setModal( 'PLAYLIST' ) );
+    } else {
+      if ( !accessToken ) return;
+      dispatch( setModal( 'DEVICE' ) );
+    }
   }, [ deviceId, jumpmanTransition ] );
 
   useEffect( () => {

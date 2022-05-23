@@ -7,7 +7,7 @@ interface App {
   jordan: string[];
   jordanTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
   jumpmanTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
-  modal: 'HIDDEN' | 'AUTH' | 'PLAYLIST';
+  modal: 'HIDDEN' | 'AUTH' | 'PLAYLIST' | 'DEVICE';
 }
 
 const initialState: App = {

@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import type { RootState } from '../store';
-
 interface Track {
   albumCover: any;
   artistName: string;
@@ -143,49 +141,29 @@ export const fireCommand = createAsyncThunk<any, void, { state: any }>(
 
 const initialState: Spotify = {
   accessToken: null,
+  deviceId: null,
   interval: null,
+  playing: false,
   track: null,
   trackUri: null,
-  deviceId: null,
-  playing: false,
 };
 
 export const spotifySlice = createSlice( {
   extraReducers: {
-    [ getDevices.pending ]: () => {
-      console.log( 'pending' );
-    },
     [ getDevices.fulfilled ]: ( state, { payload } ) => {
-      console.log( 'devices/fulfilled', { payload } );
       state.deviceId = payload;
     },
     [ getDevices.rejected ]: () => {
-      console.log( 'rejected' );
-    },
-    [ fireCommand.pending ]: () => {
-      console.log( 'pending' );
-    },
-    [ fireCommand.fulfilled ]: () => {
-      console.log( 'fireCommand/fulfilled' );
+      console.log( 'getDevices.rejected' );
     },
     [ fireCommand.rejected ]: () => {
-      console.log( 'rejected' );
+      console.log( 'fireCommand.rejected' );
     },
     [ ping.fulfilled ]: ( state, { payload } ) => {
-      console.log( 'ping/fulfilled' );
       state.interval = payload;
     },
-    [ startPlaylist.pending ]: () => {
-      console.log( 'pending' );
-    },
-    [ startPlaylist.fulfilled ]: ( state, { payload } ) => {
-      console.log( 'startPlaylist/fulfilled', { payload } );
-    },
     [ startPlaylist.rejected ]: () => {
-      console.log( 'rejected' );
-    },
-    [ getTrack.pending ]: () => {
-      console.log( 'pending' );
+      console.log( 'startPlaylist.rejected' );
     },
     [ getTrack.fulfilled ]: ( state, { payload } ) => {
       if ( !payload ) return;
@@ -196,7 +174,7 @@ export const spotifySlice = createSlice( {
       state.trackUri = uri;
     },
     [ getTrack.rejected ]: () => {
-      console.log( 'rejected' );
+      console.log( 'getTrack.rejected' );
     },
   },
   initialState,
@@ -204,7 +182,9 @@ export const spotifySlice = createSlice( {
   reducers: {
     resetState: ( state ) => {
       clearInterval( state.interval );
+      state.accessToken = null;
       state.deviceId = null;
+      state.interval = null;
       state.playing = false;
       state.track = null;
       state.trackUri = null;
