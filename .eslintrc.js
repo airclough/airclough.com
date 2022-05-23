@@ -15,10 +15,13 @@ module.exports = {
     '@typescript-eslint/default-param-last': 0,
     'array-bracket-spacing': [ 'error', 'always' ],
     'computed-property-spacing': [ 'error', 'always' ],
+    'consistent-return': 0,
     'max-len': [ 'error', { 'code': 120 } ],
     'import/extensions': 0,
+    'no-param-reassign': 0,
     'semi': [ 'error', 'always' ],
     'space-in-parens': [ 'error', 'always' ],
     'template-curly-spacing': [ 'error', 'always' ],
+    '@typescript-eslint/naming-convention': 0,
   },
 };

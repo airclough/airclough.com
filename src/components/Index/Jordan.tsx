@@ -18,7 +18,7 @@ const interval = 2000;
 const Letters: FC<LettersProps> = ( { i, jordanLetter, multiplier } ) => {
   const y = alphabetSansQ.indexOf( jordanLetter ) * multiplier;
   const { track } = useAppSelector( ( { spotify } ) => spotify );
-  const color = ( track && ( i === 2 || i === 3 ) ) ? '#fff' : '#333'
+  const color = ( track && ( i === 2 || i === 3 ) ) ? '#fff' : '#333';
 
   return (
     <div className="Letters">

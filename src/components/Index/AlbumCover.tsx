@@ -20,7 +20,7 @@ const AlbumCover = () => {
 
   useLayoutEffect( () => {
     if ( !transition ) return;
-    const albumCoversMap = albumCovers.map( ( track ) => ( { ...track, x: track.x - 100 } ) );
+    const albumCoversMap = albumCovers.map( ( t ) => ( { ...t, x: t.x - 100 } ) );
     const [ _, albumCover ] = albumCoversMap;
 
     setAlbumCovers( albumCoversMap );
@@ -33,11 +33,10 @@ const AlbumCover = () => {
   return (
     <div className="AlbumCover" style={ { opacity: track ? 1 : 0 } }>
       {
-        albumCovers.map( ( { trackUri, url, x } ) => <div
+        albumCovers.map( ( { trackUri: uri, url, x } ) => <div
           className="albumCover"
-          key={ trackUri }
-          style={ { backgroundImage: `url( ${ url } )`, transform: `translate3d( ${ x }%, 0, 0 )` } }/>
-        )
+          key={ uri }
+          style={ { backgroundImage: `url( ${ url } )`, transform: `translate3d( ${ x }%, 0, 0 )` } }/> )
       }
     </div>
   );

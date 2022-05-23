@@ -27,20 +27,21 @@ export const getDevices = createAsyncThunk<any, void, { state: any }>(
   async ( _, { getState } ) => {
     const { spotify } = getState();
     const { accessToken } = spotify;
-    const id = await axios.get( `${ url }/me/player/devices`, { headers: { Authorization: `Bearer ${ accessToken }` } } )
+    const options = { headers: { Authorization: `Bearer ${ accessToken }` } };
+    const id = await axios.get( `${ url }/me/player/devices`, options )
       .then( ( { data } ) => {
         if ( !data ) return;
         const { devices } = data;
         const [ device ] = devices.filter( ( { is_active } ) => is_active );
         if ( !device ) return null;
-        const { id } = device;
+        const { id: deviceId } = device;
 
-        return id;
+        return deviceId;
       } )
       .catch( ( error ) => console.error( { error } ) );
 
     return id;
-  }
+  },
 );
 
 const getTrack = createAsyncThunk<any, void, { state: any }>(
@@ -48,7 +49,8 @@ const getTrack = createAsyncThunk<any, void, { state: any }>(
   async ( _, { dispatch, getState } ) => {
     const { spotify } = getState();
     const { accessToken } = spotify;
-    const track = await axios.get( 'https://api.spotify.com/v1/me/player', { headers: { Authorization: `Bearer ${ accessToken }` } } )
+    const options = { headers: { Authorization: `Bearer ${ accessToken }` } };
+    const track = await axios.get( 'https://api.spotify.com/v1/me/player', options )
       .then( ( { data } ) => {
         // console.log( { data } );
         if ( !data ) return null;
@@ -68,7 +70,7 @@ const getTrack = createAsyncThunk<any, void, { state: any }>(
           .reverse();
         const [ artist ] = artists;
         const { name: artistName } = artist;
-        const progress = progress_ms / duration_ms * 100;
+        const progress = ( progress_ms / duration_ms ) * 100;
 
         return {
           albumCover,
@@ -102,7 +104,7 @@ export const ping = createAsyncThunk<any, void, { state: any }>(
     }, 1000 );
 
     return interval;
-  }
+  },
 );
 
 export const startPlaylist = createAsyncThunk<any, void, { state: any }>(
@@ -114,11 +116,11 @@ export const startPlaylist = createAsyncThunk<any, void, { state: any }>(
     await axios.put(
       'https://api.spotify.com/v1/me/player/play',
       { context_uri: uri, offset: { position: offset } },
-      { headers: { Authorization: `Bearer ${ accessToken }` } }
+      { headers: { Authorization: `Bearer ${ accessToken }` } },
     ).catch( ( error ) => console.error( { error } ) );
 
     return true;
-  }
+  },
 );
 
 export const fireCommand = createAsyncThunk<any, void, { state: any }>(
@@ -131,12 +133,12 @@ export const fireCommand = createAsyncThunk<any, void, { state: any }>(
     await axios[ pausePlay ? 'put' : 'post' ](
       `https://api.spotify.com/v1/me/player/${ command }`,
       {},
-      { headers: { Authorization: `Bearer ${ accessToken }` } }
+      { headers: { Authorization: `Bearer ${ accessToken }` } },
     ).catch( ( error ) => console.error( { error } ) );
     if ( command === 'pause' ) dispatch( { type: 'resetState' } );
 
     return true;
-  }
+  },
 );
 
 const initialState: Spotify = {

@@ -94,7 +94,7 @@ const Auth = () => {
   );
 };
 
-const Player = () =>  {
+const Player = () => {
   const { jumpmanTransition } = useAppSelector( ( { app } ) => app );
   const {
     accessToken,
