@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 
 import Head from '../src/components/shared/Head';
-import store from '../src/redux/store';
+import { store } from '../src/redux/store';
 
 import '../styles/main.scss';
 

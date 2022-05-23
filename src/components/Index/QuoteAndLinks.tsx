@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
 
 import Quote from './Quote';
 import Links from './Links';
-import { RootState } from '../../redux/reducers';
+import { useAppSelector } from '../../redux/hooks';
 
 const QuoteAndLinks: FC = () => {
-  const { namesakeTransition } = useSelector( ( { app }: RootState ) => app );
+  const { jordanTransition } = useAppSelector( ( { app } ) => app );
 
   return (
-    <div className="QuoteAndLinks" style={ { opacity: +( namesakeTransition === 'COMPLETE' ) } }>
+    <div className="QuoteAndLinks" style={ { opacity: +( jordanTransition === 'COMPLETE' ) } }>
       <Quote />
       <Links />
     </div>

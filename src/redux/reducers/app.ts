@@ -1,66 +1,88 @@
-import { AnyAction } from 'redux';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  SET_AIR_INDEX,
-  SET_AIR_TRANSITION,
-  SET_NAMESAKE,
-  SET_NAMESAKE_TRANSITION,
-} from '../actions/app';
-
-interface AppState {
+interface App {
+  air: string[];
   airIndex: number | null;
   airTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
-  namesake: Array<string>;
-  namesakeTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
+  jordan: string[];
+  jordanTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
+  jumpmanTransition: 'PAUSED' | 'ACTIVE' | 'COMPLETE';
+  modal: 'HIDDEN' | 'AUTH' | 'PLAYLIST' | 'DEVICE';
 }
 
-const initialState: AppState = {
+const initialState: App = {
+  air: 'AIR'.split( '' ),
   airIndex: null,
   airTransition: 'PAUSED',
-  namesake: 'JORDAN'.split( '' ),
-  namesakeTransition: 'PAUSED',
+  jordan: 'JORDAN'.split( '' ),
+  jordanTransition: 'PAUSED',
+  jumpmanTransition: 'PAUSED',
+  modal: 'HIDDEN',
 };
 
-const app = (
-  state = initialState,
-  { payload, type }: AnyAction,
-): AppState => {
-  switch ( type ) {
-    case SET_AIR_INDEX: {
-      const { airIndex } = payload;
+export const appSlice = createSlice( {
+  initialState,
+  name: 'app',
+  reducers: {
+    resetState: ( state ) => {
+      state.air = initialState.air;
+      state.jordan = 'CLOUGH'.split( '' );
+    },
+    setAir: ( state, action: PayloadAction<App[ 'air' ]> ) => {
+      const { payload } = action;
 
-      return {
-        ...state,
-        airIndex,
-      };
-    }
-    case SET_AIR_TRANSITION: {
-      const { airTransition } = payload;
+      state.air = payload;
+    },
+    setAirIndex: ( state, action: PayloadAction<App[ 'airIndex' ]> ) => {
+      const { payload } = action;
 
-      return {
-        ...state,
-        airTransition,
-      };
-    }
-    case SET_NAMESAKE: {
-      const { namesake } = payload;
+      state.airIndex = payload;
+    },
+    setAirJordan: ( state, action: PayloadAction<any> ) => {
+      const { payload } = action;
+      const { air, jordan } = payload;
 
-      return {
-        ...state,
-        namesake,
-      };
-    }
-    case SET_NAMESAKE_TRANSITION: {
-      const { namesakeTransition } = payload;
+      state.air = air;
+      state.jordan = jordan;
+    },
+    setAirTransition: ( state, action: PayloadAction<App[ 'airTransition' ]> ) => {
+      const { payload } = action;
 
-      return {
-        ...state,
-        namesakeTransition,
-      };
-    }
-    default:
-      return state;
-  }
-};
+      state.airTransition = payload;
+    },
+    setJordan: ( state, action: PayloadAction<App[ 'jordan' ]> ) => {
+      const { payload } = action;
 
-export default app;
+      state.jordan = payload;
+    },
+    setJordanTransition: ( state, action: PayloadAction<App[ 'jordanTransition' ]> ) => {
+      const { payload } = action;
+
+      state.jordanTransition = payload;
+    },
+    setJumpmanTransition: ( state, action: PayloadAction<App[ 'jumpmanTransition' ]> ) => {
+      const { payload } = action;
+
+      state.jumpmanTransition = payload;
+    },
+    setModal: ( state, action: PayloadAction<App[ 'modal' ]> ) => {
+      const { payload } = action;
+
+      state.modal = payload;
+    },
+  },
+} );
+
+export const {
+  resetState,
+  setAir,
+  setAirIndex,
+  setAirJordan,
+  setAirTransition,
+  setJordan,
+  setJordanTransition,
+  setJumpmanTransition,
+  setModal,
+} = appSlice.actions;
+
+export default appSlice.reducer;

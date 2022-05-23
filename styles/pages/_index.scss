@@ -27,7 +27,7 @@
   }
 
   .indexContainer {
-    .Namesake {
+    .Jordan {
       position: relative;
       z-index: 1;
 
@@ -37,6 +37,7 @@
         top: 50%;
         transform: translate3d( 0, -50%, 0 );
         width: 100%;
+        z-index: 1;
 
         h2 {
           align-items: center;
@@ -68,6 +69,7 @@
         justify-content: center;
         position: relative;
         transition: opacity 1s;
+        z-index: 1;
 
         @media ( max-width: $mobileMax ) {
           font-size: 2rem;
@@ -96,7 +98,29 @@
         }
       }
 
-      .JordanLogo {
+      .AlbumCover {
+        height: 288px;
+        left: 50%;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        transform: translate3d( -50%, -50%, 0 );
+        width: 288px;
+        z-index: 0;
+
+        .albumCover {
+          background-color: #fff;
+          background-size: cover;
+          height: inherit;
+          left: 0;
+          position: absolute;
+          top: 0;
+          transition: transform .5s;
+          width: inherit;
+        }
+      }
+
+      .Jumpman {
         left: 50%;
         position: absolute;
         top: 50%;
@@ -144,6 +168,7 @@
 
       .Quote {
         margin-bottom: 3rem;
+        min-height: 3rem;
 
         p {
           color: #ccc;
@@ -216,6 +241,195 @@
       }
     }
   }
+
+  .Player {
+    background: #fff;
+    bottom: 0;
+    height: 112px;
+    left: 0;
+    padding: 0 1.5rem;
+    position: absolute;
+    transition: opacity 1s;
+    width: 100%;
+
+    @media ( max-width: $mobileMax ) {
+      display: none;
+    }
+
+    .Auth {
+      align-items: center;
+      display: flex;
+      height: inherit;
+      justify-content: center;
+
+      > div {
+        animation-delay: 5s;
+        animation-direction: alternate;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+        animation-name: shake;
+        width: 1rem;
+
+        &:hover {
+          color: $primary;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .TrackAndControls {
+      align-items: center;
+      display: flex;
+      height: inherit;
+      justify-content: center;
+
+      > div {
+        height: inherit;
+        width: 33.3333333333%;
+      }
+
+      .track {
+        align-items: center;
+        display: flex;
+
+        .Track {
+          align-items: center;
+          display: flex;
+
+          .albumCoverContainer {
+            background: #333;
+            background-size: cover;
+            height: 64px;
+            margin-right: 1.5rem;
+            overflow: hidden;
+            width: 64px;
+          }
+
+          .artistAndSong {
+            > div {
+              text-overflow: ellipsis;
+              width: 100%;
+            }
+
+            .artist {
+              color: #999;
+              font-size: .75rem;
+              margin-bottom: .25rem;
+            }
+          }
+        }
+      }
+
+      .controls {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+
+        > div {
+          margin-right: 1.5rem;
+          width: 1rem;
+
+          &:hover {
+            color: $primary;
+            cursor: pointer;
+          }
+
+          &:last-of-type {
+            margin-right: 0;
+          }
+        }
+      }
+
+      .shuffle {
+        align-items: center;
+        display: flex;
+        justify-content: right;
+        padding: 0 2rem;
+
+        > div {
+          width: 1rem;
+
+          &:hover {
+            color: $primary;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .Progress {
+        height: 2px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+
+        > div {
+          background: $primary;
+          height: inherit;
+          transition: width 2s;
+          width: 0%;
+        }
+      }
+    }
+  }
+
+  .Modal {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+
+    .overlay {
+      align-items: center;
+      display: flex;
+      backdrop-filter: blur( .5rem );
+      background: rgba( 255, 255, 255, .5 );
+      height: inherit;
+      justify-content: center;
+      width: inherit;
+
+      .content {
+        background: #fff;
+        border-radius: .25rem;
+        box-shadow: 0 0 2rem rgba( 0, 0, 0, .2 );
+        padding: 3rem;
+        text-align: center;
+        width: 30rem;
+
+        h2 {
+          font-size: 1.25rem;
+          font-weight: 300;
+          line-height: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        p {
+          color: #999;
+          margin-bottom: 1.5rem;
+
+          span {
+            font-style: italic;
+          }
+        }
+
+        .buttonContainer {
+          > div {
+            display: inline-block;
+            margin-right: .5rem;
+
+            &:last-of-type {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @keyframes fall {
@@ -223,4 +437,13 @@
   50% { transform: rotate( -225deg ); }
   80% { opacity: .05; transform: rotate( -90deg ); }
   100% { opacity: 0; transform: rotate( -90deg ) translate3d( -50vh, 0, 0 ); }
+}
+
+@keyframes shake {
+  0% { transform: scale( 2 ) skewX( -15deg ); }
+  1% { transform: scale( 2 ) skewX( 15deg ); }
+  2% { transform: scale( 2 ) skewX( -15deg ); }
+  3% { transform: scale( 2 ) skewX( 15deg ); }
+  4% { transform: scale( 1 ) skewX( 0deg ); }
+  100% { transform: scale( 1) skewX( 0deg ); }
 }

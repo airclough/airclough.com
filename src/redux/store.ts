@@ -1,8 +1,25 @@
-import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
+import { configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
 
-import { rootReducer } from './reducers';
+import app, { resetState as resetAppState } from './reducers/app';
+import spotify, { resetState as resetSpotifyState } from './reducers/spotify';
 
-const store = createStore( rootReducer, applyMiddleware( thunk ) );
+const listenerMiddleware = createListenerMiddleware();
 
-export default store;
+listenerMiddleware.startListening( {
+  effect: async ( _, { dispatch } ) => {
+    dispatch( resetAppState() );
+    dispatch( resetSpotifyState() );
+  },
+  type: 'resetState',
+} );
+
+export const store = configureStore( {
+  middleware: ( getDefaultMiddleware ) => getDefaultMiddleware().prepend( listenerMiddleware.middleware ),
+  reducer: {
+    app,
+    spotify,
+  },
+} );
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
