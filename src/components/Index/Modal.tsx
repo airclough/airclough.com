@@ -33,7 +33,7 @@ const SpotifyAuth = () => {
   return (
     <div className="SpotifyAuth">
       <h2>Connect Your Spotify Account For the Full airclough.com Experience</h2>
-      <p>You will be redirected to spotify.com to authenticate your account. No data or personal information is stored. Proof is in the <a href="https://github.com/airclough/airclough.com/blob/main/src/redux/reducers/spotify.ts">pudding</a>.</p>
+      <p>You will be redirected to spotify.com to authenticate your account. No data or personal information is stored. Proof is in the <a href="https://github.com/airclough/airclough.com/blob/main/src/redux/reducers/spotify.ts" target="_blank">pudding</a>.</p>
       <div className="buttonContainer">
         <div>
           <a href={ href }>
