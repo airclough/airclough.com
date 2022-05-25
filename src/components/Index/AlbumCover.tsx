@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
@@ -18,7 +18,7 @@ const AlbumCover = () => {
     }, 100 );
   }, [ trackUri ] );
 
-  useLayoutEffect( () => {
+  useEffect( () => {
     if ( !transition ) return;
     const albumCoversMap = albumCovers.map( ( t ) => ( { ...t, x: t.x - 100 } ) );
     const [ _, albumCover ] = albumCoversMap;
