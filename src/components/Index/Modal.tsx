@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
@@ -32,10 +33,7 @@ const SpotifyAuth = () => {
   return (
     <div className="SpotifyAuth">
       <h2>Connect Your Spotify Account For the Full airclough.com Experience</h2>
-      <p>
-        You will be redirected to spotify.com to authenticate your account.
-        No data or personal information is stored. Proof is in the <a href="">pudding</a>.
-      </p>
+      <p>You will be redirected to spotify.com to authenticate your account. No data or personal information is stored. Proof is in the <a href="https://github.com/airclough/airclough.com/blob/main/src/redux/reducers/spotify.ts">pudding</a>.</p> // eslint-disable-line max-len
       <div className="buttonContainer">
         <div>
           <a href={ href }>
@@ -60,10 +58,8 @@ const Device = () => {
   return (
     <div className="Device">
       <h2>No Active Device Found</h2>
-      <p>
-        Activate Spotify on your computer or mobile device by playing a song.
-        Then reauthenticate by clicking the button below.
-      </p>
+      // eslint-disable-next-line max-len
+      <p>Activate Spotify on your computer or mobile device by playing a song. Then reauthenticate by clicking the button below.</p>
       <div className="buttonContainer">
         <div>
           <a href={ href }>
@@ -94,15 +90,8 @@ const SpotifyPlaylist = () => {
   return (
     <div className="SpotifyPlaylist">
       <h2>NSFW Warning</h2>
-      <p>
-        You are about to play tracks from a custom playlist inspired by the question
-        <span>"What are you currently listening to at the gym?"</span>.
-        The lyrics are NSFW even with a pair of noise-canceling headphones that trap all sound.
-      </p>
-      <p>
-        If you are my employer, a recruiter, or a potential future employer, can I suggest a
-        <a href="#" onClick={ onClick }>random rock album from the 90's</a>?
-      </p>
+      <p>You are about to play tracks from a custom playlist inspired by the question <span>"What are you currently listening to at the gym?"</span>. The lyrics are NSFW even with a pair of noise-canceling headphones that trap all sound.</p> // eslint-disable-line max-len
+      <p>If you are my employer, a recruiter, or a potential future employer, can I suggest a <a href="#" onClick={ onClick }>random rock album from the 90's</a>?</p> // eslint-disable-line max-len
       <div className="buttonContainer">
         <div onClick={ () => { dispatch( startPlaylist( aircloughPlaylist ) ); dispatch( setModal( 'HIDDEN' ) ); } }>
           <button className="btn btn-primary" type="button">
