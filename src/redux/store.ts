@@ -16,7 +16,8 @@ listenerMiddleware.startListening( {
 } );
 
 export const store = configureStore( {
-  middleware: ( getDefaultMiddleware ) => getDefaultMiddleware().prepend( listenerMiddleware.middleware ),
+  middleware: ( getDefaultMiddleware ) => getDefaultMiddleware( { serializableCheck: false } )
+    .prepend( listenerMiddleware.middleware ),
   reducer: {
     app,
     spotify,

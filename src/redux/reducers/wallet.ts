@@ -1,21 +1,25 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { utils } from 'ethers';
 
 type Status = 'CONNECTED' | 'NOT_CONNECTED' | 'CONNECTING' | 'NOT_INSTALLED';
 
 interface Wallet {
   address: string;
+  contract: any | null;
   displayAddress: string;
   provider: any | null;
   status: Status;
 }
 
-export const getAccounts = createAsyncThunk<any, void, { state: Wallet }>(
-  'getAccounts',
+export const enter = createAsyncThunk<any, void, { state: any }>(
+  'enter',
   async ( _, { getState } ) => {
-    const { address } = getState();
+    const { wallet } = getState();
+    const { contract } = wallet;
+    const transaction = await contract.enter( { value: utils.parseEther( '0.01' ) } )
+      .catch( ( error ) => console.error( { error } ) );
 
-    return address;
+    return transaction;
   },
 );
 
@@ -30,6 +34,7 @@ const createDisplayAddress = ( address: string ) => {
 
 const initialState: Wallet = {
   address: '',
+  contract: null,
   displayAddress: '',
   provider: null,
   status: 'CONNECTING',
@@ -37,11 +42,11 @@ const initialState: Wallet = {
 
 export const walletSlice = createSlice( {
   extraReducers: {
-    'getAccounts/fulfilled': ( state, { payload } ) => {
-      //
+    'enter/fulfilled': ( state, { payload } ) => {
+      console.log( { payload } );
     },
-    'getAccounts/rejected': () => {
-      console.log( 'getAccounts.rejected' );
+    'enter/rejected': () => {
+      console.log( 'enter.rejected' );
     },
   },
   initialState,
@@ -55,6 +60,11 @@ export const walletSlice = createSlice( {
 
       state.address = payload;
       state.displayAddress = createDisplayAddress( payload );
+    },
+    setContract: ( state, action: PayloadAction<Wallet[ 'contract' ]> ) => {
+      const { payload } = action;
+
+      state.contract = payload;
     },
     setProvider: ( state, action: PayloadAction<Wallet[ 'provider' ]> ) => {
       const { payload } = action;
@@ -72,6 +82,7 @@ export const walletSlice = createSlice( {
 export const {
   resetState,
   setAddress,
+  setContract,
   setProvider,
   setStatus,
 } = walletSlice.actions;

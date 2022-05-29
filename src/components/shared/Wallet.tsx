@@ -1,19 +1,29 @@
-import { providers } from 'ethers';
-import React, { FC, useEffect, useState } from 'react';
+import { BigNumber, Contract, providers, utils } from 'ethers';
+import React, { FC, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setAddress, setProvider, setStatus } from '../../redux/reducers/wallet';
+import {
+  setAddress,
+  setContract,
+  setProvider,
+  setStatus,
+} from '../../redux/reducers/wallet';
+import MonumentPark from '../../../artifacts/contracts/MonumentPark.sol/MonumentPark.json';
+
+const contractAddress = '0xbbd9262F29Ee6F6a9a2d4d73adcc01fA8b169522';
+const { abi } = MonumentPark;
 
 const Connect: FC = () => {
   const { provider } = useAppSelector( ( { wallet } ) => wallet );
+  const dispatch = useAppDispatch();
   const onClick = async () => {
     if ( !provider ) return;
     const addresses = await provider.send( 'eth_requestAccounts', [] )
-      .catch( ( error ) => console.error( error ) );
+      .catch( ( error ) => console.error( { error } ) );
     if ( !addresses ) return;
     const [ address ] = addresses;
 
-    setAddress( address || null );
+    dispatch( setAddress( address || '' ) );
   };
 
   return (
@@ -46,7 +56,12 @@ const Install: FC = () => (
 );
 
 const Wallet: FC = () => {
-  const { provider, status } = useAppSelector( ( { wallet } ) => wallet );
+  const {
+    address,
+    contract,
+    provider,
+    status,
+  } = useAppSelector( ( { wallet } ) => wallet );
   const dispatch = useAppDispatch();
 
   useEffect( () => {
@@ -58,10 +73,10 @@ const Wallet: FC = () => {
 
       ethereum.on( 'accountsChanged', ( accounts: Array<string> ) => {
         console.log( 'accountsChanged', { accounts } );
-        const [ firstAddress ] = accounts;
+        const [ address ] = accounts;
 
-        dispatch( setAddress( firstAddress || null ) );
-        dispatch( setStatus( firstAddress ? 'CONNECTED' : 'NOT_CONNECTED' ) );
+        dispatch( setAddress( address || null ) );
+        dispatch( setStatus( address ? 'CONNECTED' : 'NOT_CONNECTED' ) );
       } );
 
       ethereum.on( 'chainChanged', ( chainId: string ) => {
@@ -80,12 +95,49 @@ const Wallet: FC = () => {
 
     provider.listAccounts()
       .then( ( accounts: Array<string> ) => {
-        const [ firstAddress ] = accounts;
+        const [ address ] = accounts;
 
-        dispatch( setAddress( firstAddress || null ) );
-        dispatch( setStatus( firstAddress ? 'CONNECTED' : 'NOT_CONNECTED' ) );
+        dispatch( setAddress( address || '' ) );
+        dispatch( setStatus( address ? 'CONNECTED' : 'NOT_CONNECTED' ) );
       } );
   }, [ provider ] );
+
+  useEffect( () => {
+    if ( !provider || status !== 'CONNECTED' ) return;
+    const contract = new Contract(
+      contractAddress,
+      abi,
+      provider.getSigner( 0 )
+    );
+
+    dispatch( setContract( contract ) );
+  }, [ provider, status ] );
+
+  useEffect( () => {
+    if ( !contract ) return;
+
+    contract.on( 'Entry', (
+      entryAddress: string,
+      distance: BigNumber,
+      angle: BigNumber,
+      winner: boolean,
+      block: any
+    ) => {
+      if ( entryAddress !== address ) return;
+      console.log(
+        {
+          distance: distance.toNumber(),
+          angle: angle.toNumber(),
+          winner,
+          block,
+        }
+      );
+    } );
+
+    return () => {
+      contract.off( 'entry' );
+    }
+  }, [ contract ] );
 
   return (
     <div className="Wallet">
