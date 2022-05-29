@@ -1,0 +1,67 @@
+.Cover {
+  .MonumentPark {
+    header {
+      background: $yankee-blue;
+      height: 80px;
+
+      .container {
+        align-items: center;
+        display: flex;
+        height: inherit;
+
+        .logo {
+          align-items: center;
+          display: flex;
+          flex-grow: 2;
+
+          .pinstripes {
+            background: $yankee-blue;
+            border-radius: 50%;
+            height: 3rem;
+            margin-right: 1rem;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+            width: 3rem;
+
+            ul {
+              height: inherit;
+
+              li {
+                background: #fff;
+                display: inline-block;
+                height: inherit;
+                margin: 0 .25rem;
+                width: 2px;
+              }
+            }
+          }
+
+          h1 {
+            color: #fff;
+            font-size: 2rem;
+            letter-spacing: .2rem;
+            text-transform: uppercase;
+
+            span {
+              font-weight: 100;
+            }
+          }
+        }
+
+        .Wallet {
+          .btn {
+            align-items: center;
+            display: flex;
+
+            img {
+              display: block;
+              height: 2rem;
+              margin-right: .5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

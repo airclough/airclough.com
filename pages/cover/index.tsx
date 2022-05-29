@@ -1,15 +1,11 @@
 import React, { FC } from 'react';
 
-import Swing from '../../src/components/cover/Swing';
-import Wallet from '../../src/components/shared/Wallet';
+import MonumentPark from '../../src/components/cover/MonumentPark';
 
-const Cover: FC = () => {
-  return (
-    <div className="Cover">
-      <Wallet />
-      <Swing />
-    </div>
-  );
-};
+const Cover: FC = () => (
+  <div className="Cover">
+    <MonumentPark />
+  </div>
+);
 
 export default Cover;

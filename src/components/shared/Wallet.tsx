@@ -27,7 +27,7 @@ const Connect: FC = () => {
   };
 
   return (
-    <button className="btn btn-primary" onClick={ onClick } type="button">
+    <button className="btn btn-outline-secondary" onClick={ onClick } type="button">
       <img alt="Metamask" src="/logos/metamask-fox.svg" />
       <div>Connect wallet</div>
     </button>
@@ -39,7 +39,7 @@ const Disconnect: FC = () => {
   const onClick = () => {};
 
   return (
-    <button className="btn btn-primary" onClick={ onClick } type="button">
+    <button className="btn btn-outline-secondary" onClick={ onClick } type="button">
       <img alt="Metamask" src="/logos/metamask-fox.svg" />
       <div>{ displayAddress }</div>
     </button>
@@ -48,7 +48,7 @@ const Disconnect: FC = () => {
 
 const Install: FC = () => (
   <a className="install" href="https://metamask.io/" target="_blank">
-    <button className="btn btn-primary" type="button">
+    <button className="btn btn-outline-secondary" type="button">
       <img alt="Metamask" src="/logos/metamask-fox.svg" />
       <div>Install wallet</div>
     </button>
@@ -135,7 +135,7 @@ const Wallet: FC = () => {
     } );
 
     return () => {
-      contract.off( 'entry' );
+      // contract.off( 'entry' );
     }
   }, [ contract ] );
 
