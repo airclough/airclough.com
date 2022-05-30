@@ -8,6 +8,7 @@ import {
   setProvider,
   setStatus,
 } from '../../redux/reducers/wallet';
+import eventBus from '../../utils/events';
 import MonumentPark from '../../../artifacts/contracts/MonumentPark.sol/MonumentPark.json';
 
 const contractAddress = '0xbbd9262F29Ee6F6a9a2d4d73adcc01fA8b169522';
@@ -124,14 +125,15 @@ const Wallet: FC = () => {
       block: any
     ) => {
       if ( entryAddress !== address ) return;
-      console.log(
-        {
-          distance: distance.toNumber(),
-          angle: angle.toNumber(),
-          winner,
-          block,
-        }
-      );
+      const entry = {
+        distance: distance.toNumber(),
+        angle: angle.toNumber(),
+        winner,
+        block,
+      };
+      console.log( { entry } );
+
+      eventBus.emit( 'entry', entry );
     } );
 
     return () => {

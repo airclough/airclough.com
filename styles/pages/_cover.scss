@@ -1,28 +1,39 @@
 .Cover {
   .MonumentPark {
+    background: $yankee-blue;
+    color: #fff;
+    position: relative;
+
     header {
-      background: $yankee-blue;
-      height: 80px;
+      height: 160px;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
 
       .container {
         align-items: center;
         display: flex;
         height: inherit;
 
+        > div {
+          width: 33.3333333333%;
+        }
+
         .logo {
           align-items: center;
           display: flex;
-          flex-grow: 2;
+          justify-content: center;
 
           .pinstripes {
             background: $yankee-blue;
             border-radius: 50%;
-            height: 3rem;
+            height: 2rem;
             margin-right: 1rem;
             overflow: hidden;
             position: relative;
             text-align: center;
-            width: 3rem;
+            width: 2rem;
 
             ul {
               height: inherit;
@@ -39,7 +50,7 @@
 
           h1 {
             color: #fff;
-            font-size: 2rem;
+            font-size: 1.5rem;
             letter-spacing: .2rem;
             text-transform: uppercase;
 
@@ -50,6 +61,9 @@
         }
 
         .Wallet {
+          display: flex;
+          justify-content: right;
+
           .btn {
             align-items: center;
             display: flex;
@@ -59,6 +73,30 @@
               height: 2rem;
               margin-right: .5rem;
             }
+          }
+        }
+      }
+    }
+
+    main {
+      padding-top: 5rem;
+
+      .Game {
+        canvas {
+          display: block;
+          margin: 0 auto;
+        }
+      }
+
+      .Swing {
+        padding-bottom: 3rem;
+        text-align: center;
+
+        .btn {
+          margin-right: 1rem;
+
+          &:last-of-type {
+            margin-right: 0;
           }
         }
       }
