@@ -1,14 +1,4 @@
-import {
-  AnimatedSprite,
-  BaseTexture,
-  Container,
-  Graphics,
-  Loader,
-  Rectangle,
-  Sprite,
-  Texture,
-  Ticker,
-} from 'pixi.js';
+import { Container, Graphics } from 'pixi.js';
 
 import eventBus from '../../utils/events';
 

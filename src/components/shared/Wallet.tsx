@@ -11,7 +11,7 @@ import {
 import eventBus from '../../utils/events';
 import MonumentPark from '../../../artifacts/contracts/MonumentPark.sol/MonumentPark.json';
 
-const contractAddress = '0xbbd9262F29Ee6F6a9a2d4d73adcc01fA8b169522';
+const contractAddress = '0x76f3F26C0251dC71274052C8FC05710B20c09183';
 const { abi } = MonumentPark;
 
 const Connect: FC = () => {
@@ -119,17 +119,19 @@ const Wallet: FC = () => {
 
     contract.on( 'Entry', (
       entryAddress: string,
-      distance: BigNumber,
-      angle: BigNumber,
+      contactData: any,
       winner: boolean,
-      block: any
+      blockData: any,
     ) => {
+      console.log( { entryAddress, contactData, winner, blockData } );
       if ( entryAddress !== address ) return;
+      const { angle, distance, pitchX, pitchY, trajectory } = contactData;
       const entry = {
+        angle: angle.toNumber() / 100,
         distance: distance.toNumber(),
-        angle: angle.toNumber(),
-        winner,
-        block,
+        pitchX: pitchX.toNumber(),
+        pitchY: pitchY.toNumber(),
+        trajectory,
       };
       console.log( { entry } );
 

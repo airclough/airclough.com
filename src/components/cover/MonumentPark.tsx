@@ -17,7 +17,7 @@ const MonumentPark: FC = () => {
           <div className="logo">
             <div className="pinstripes">
               <ul>
-                { Array.from( { length: 3 } ).map( () => <li/> ) }
+                { Array.from( { length: 3 } ).map( ( _, i ) => <li key={ i } /> ) }
               </ul>
             </div>
             <h1><span>Monument</span>Park</h1>

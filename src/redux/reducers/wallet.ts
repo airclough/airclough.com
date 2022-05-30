@@ -11,12 +11,12 @@ interface Wallet {
   status: Status;
 }
 
-export const enter = createAsyncThunk<any, void, { state: any }>(
+export const enter = createAsyncThunk<any, number[], { state: any }>(
   'enter',
-  async ( _, { getState } ) => {
+  async ( [ x, y ], { getState } ) => {
     const { wallet } = getState();
     const { contract } = wallet;
-    const transaction = await contract.enter( { value: utils.parseEther( '0.01' ) } )
+    const transaction = await contract.enter( x, y, { value: utils.parseEther( '0.01' ) } )
       .catch( ( error ) => console.error( { error } ) );
 
     return transaction;

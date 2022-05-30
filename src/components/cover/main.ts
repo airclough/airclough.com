@@ -18,6 +18,12 @@ interface Coords {
   y: number;
 }
 
+const trajectoryMap = {
+  0: 'STRIKE_OUT',
+  1: 'GROUND_BALL',
+  2: 'FLY_BALL',
+};
+
 const angleToRadians = ( angle: number ) => angle * ( Math.PI / 180 );
 
 const aas = ( { angle, distance }: { angle: number; distance: number; } ) => {
@@ -68,9 +74,9 @@ export class Scene extends Container {
 
   private play: any;
 
-  private pitchCoords: Coords;
-
   private rubber: ExtendedAnimatedSprite | null;
+
+  private swingType: string;
 
   private zone: Zone | null;
 
@@ -155,8 +161,9 @@ export class Scene extends Container {
     return ball;
   }
 
-  onSwing() {
+  onSwing( swingType: string ) {
     if ( this.icon ) { this.icon.destroy(); this.icon = null; }
+    this.swingType = swingType;
     this.field.destroy();
     this.field = null;
     this.rubber.destroy();
@@ -177,10 +184,13 @@ export class Scene extends Container {
     this.addChild( this.rubber );
 
     this.rubber.play();
-    this.onPracticeSwing( { x, y } );
+
+    this.swingType === 'live'
+      ? eventBus.emit( 'liveSwing', [ x, y ] )
+      : this.onPracticeSwing( [ x, y ] );
   }
 
-  onPracticeSwing( { x, y } ) {
+  onPracticeSwing( [ x, y ] ) {
     const pitchX = Math.floor( Math.random() * 321 );
     const pitchY = Math.floor( Math.random() * 321 );
     const contactX = x - pitchX;
@@ -188,25 +198,25 @@ export class Scene extends Container {
     console.log( { pitchX, pitchY, contactX, contactY } );
     if ( Math.abs( contactX ) > 120 || Math.abs( contactY ) > 120 ) { console.log( 'STRIKE_OUT' ); return; }
     console.log( 'CONTACT' );
-    const trajectory = contactY <= 0 ? 'FLY_BALL' : 'GROUND_BALL';
+    const trajectory = contactY <= 0 ? 2 : 1;
     const distanceMultiplier = 500 * ( 1 - ( ( Math.abs( contactX ) + Math.abs( contactY ) ) / 160 ) );
-    const distance = trajectory === 'FLY_BALL' ? distanceMultiplier : distanceMultiplier / 2;
+    const distance = trajectory === 2 ? distanceMultiplier : distanceMultiplier / 2;
     const angleX = contactX / 120 * 45;
     const absAngle = angleX <= 0 ? 360 - Math.abs( angleX ) : angleX;
     const angle = contactY < 40 ? absAngle : ( absAngle > 180 ? absAngle - 180 : absAngle + 180 );
 
-    this.pitchCoords = { x: pitchX, y: pitchY };
     this.onEntry( {
       angle,
       distance,
+      pitchX,
+      pitchY,
       trajectory,
     } );
   }
 
   onEntry( entry: any ) {
-    this.play = { ...entry, angle: entry.angle || 360 };
-    const { angle, distance, trajectory } = this.play;
-    console.log( { angle, distance, trajectory } );
+    const { angle, trajectory } = entry;
+    this.play = { ...entry, angle: angle || 360, trajectory: trajectoryMap[ trajectory ] };
     this.rubber.destroy();
     this.rubber = null;
     this.ball = this.createBall();
@@ -240,8 +250,8 @@ export class Scene extends Container {
 
   ballInPlay() {
     Ticker.shared.remove( this.pitch, this );
-    eventBus.emit( 'pitch', this.pitchCoords );
-    const { angle, distance, trajectory } = this.play;
+    const { angle, distance, pitchX, pitchY, trajectory } = this.play;
+    eventBus.emit( 'pitch', { x: pitchX, y: pitchY } );
     if ( !angle || !distance || !trajectory ) return this.ballInGlove();
     const { x, y } = aas( { angle, distance } );
     const endCoords = { x: this.homePlateCoords.x - x, y: this.homePlateCoords.y - y };
