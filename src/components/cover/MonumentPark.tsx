@@ -8,7 +8,7 @@ import Wallet from '../shared/Wallet';
 
 const MonumentPark: FC = () => {
   return (
-    <div className="MonumentPark">
+    <div className="MonumentPark" id="monument-park">
       <header>
         <div className="container">
           <div className="pool">

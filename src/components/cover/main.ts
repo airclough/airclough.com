@@ -203,7 +203,7 @@ export class Scene extends Container {
     const distance = trajectory === 2 ? distanceMultiplier : distanceMultiplier / 2;
     const angleX = contactX / 120 * 45;
     const absAngle = angleX <= 0 ? 360 - Math.abs( angleX ) : angleX;
-    const angle = contactY < 40 ? absAngle : ( absAngle > 180 ? absAngle - 180 : absAngle + 180 );
+    const angle = contactY < 60 ? absAngle : ( absAngle > 180 ? absAngle - 180 : absAngle + 180 );
 
     this.onEntry( {
       angle,

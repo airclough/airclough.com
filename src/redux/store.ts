@@ -1,6 +1,7 @@
 import { configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
 
 import app, { resetState as resetAppState } from './reducers/app';
+import cover from './reducers/cover';
 import spotify, { resetState as resetSpotifyState } from './reducers/spotify';
 import wallet, { resetState as resetWalletState } from './reducers/wallet';
 
@@ -20,6 +21,7 @@ export const store = configureStore( {
     .prepend( listenerMiddleware.middleware ),
   reducer: {
     app,
+    cover,
     spotify,
     wallet,
   },
