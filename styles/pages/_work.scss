@@ -26,8 +26,6 @@
     }
 
     p {
-      font-size: 1.25rem;
-      line-height: 1.5rem;
       margin-bottom: 1.5rem;
       text-align: center;
 
@@ -74,9 +72,10 @@
           }
 
           h2 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 100;
             margin-bottom: .5rem;
+            text-transform: uppercase;
           }
 
           .links {
@@ -94,8 +93,6 @@
 
           .description {
             p {
-              font-size: 1.25rem;
-              line-height: 1.5rem;
               margin-bottom: 1.5rem;
             }
           }

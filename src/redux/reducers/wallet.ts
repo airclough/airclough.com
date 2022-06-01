@@ -14,6 +14,7 @@ interface Wallet {
 export const enter = createAsyncThunk<any, number[], { state: any }>(
   'enter',
   async ( [ x, y ], { getState } ) => {
+    console.log( 'enter' );
     const { wallet } = getState();
     const { contract } = wallet;
     const transaction = await contract.enter( x, y, { value: utils.parseEther( '0.01' ) } )

@@ -11,8 +11,6 @@
     }
 
     p {
-      font-size: 1.25rem;
-      line-height: 1.5rem;
       margin-bottom: 1.5rem;
       text-align: center;
 
@@ -136,6 +134,55 @@
           &:last-of-type {
             margin-right: 0;
           }
+        }
+      }
+    }
+  }
+
+  .MonumentParkRulesAndLeaderboard {
+    padding: 5rem 0;
+
+    .container {
+      display: flex;
+
+      .rules {
+        width: 66.6666666667%;
+
+
+        h2 {
+          font-size: 1.5rem;
+          margin-bottom: 3rem;
+          text-transform: uppercase;
+        }
+
+        ul {
+          padding: 0 3rem;
+
+          li {
+            line-height: 1.25rem;
+            list-style: initial;
+            margin-bottom: 1.5rem;
+
+            span {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+
+      .Leaderboard {
+        width: 33.3333333333%;
+
+        h2 {
+          font-size: 1.5rem;
+          margin-bottom: 3rem;
+          text-transform: uppercase;
+        }
+
+        .board {
+          background: #e6e6e6;
+          padding: 3rem 1.5rem;
+          text-align: center;
         }
       }
     }

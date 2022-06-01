@@ -15,7 +15,7 @@ const Swing: FC = () => {
 
   useEffect( () => {
     eventBus.on( 'liveSwing', ( coords ) => dispatch( enter( coords ) ) );
-  } );
+  }, [] );
 
   return (
     <div className="Swing">

@@ -26,7 +26,7 @@ const CoverLetter: FC = () => {
         </a>
         <a href="#monument-park">
           <button className="btn btn-outline-primary" type="button">
-            <div>Monument Park</div>
+            <div>Play Monument Park</div>
           </button>
         </a>
       </div>
