@@ -14,8 +14,8 @@ const Work: FC = () => (
       <NeyborlyCom />
       <LandlordDashboard />
       <ShopifyApp />
-      <Nvidia />
     </div>
+    <Nvidia />
     <Footer />
   </div>
 );

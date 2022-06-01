@@ -3,7 +3,7 @@
     padding: 10rem 0;
 
     @media ( max-width: $mobileMax ) {
-      padding: 3rem 0;
+      padding: 5rem 0;
     }
 
     .logo {
@@ -49,6 +49,12 @@
   }
 
   .projects {
+    margin-bottom: 10rem;
+
+    @media ( max-width: $mobileMax ) {
+      margin-bottom: 5rem;
+    }
+
     > div {
       margin-bottom: 5rem;
 
@@ -140,15 +146,15 @@
         }
       }
     }
+  }
 
-    .Nvidia {
-      background-position: 50% 25%;
-      background-size: cover;
-      padding: 20rem 0;
+  .Nvidia {
+    background-position: 50% 25%;
+    background-size: cover;
+    padding: 20rem 0;
 
-      @media ( max-width: $mobileMax ) {
-        padding: 10rem 0;
-      }
+    @media ( max-width: $mobileMax ) {
+      padding: 10rem 0;
     }
   }
 }

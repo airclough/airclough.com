@@ -51,7 +51,7 @@ export default class BasePath extends Container {
     const oob = outOfBounds( { x, y } );
     if ( oob ) return;
     this.interactive = false;
-    console.log( { x: Math.round( x - 160 ), y: Math.round( 320 - ( y - 160 ) ) } );
+
     eventBus.emit( 'swingComplete', { x: Math.round( x - 160 ), y: Math.round( 320 - ( y - 160 ) ) } );
   }
 
@@ -65,7 +65,6 @@ export default class BasePath extends Container {
   }
 
   onPitch( { x, y } ) {
-    console.log( 'onPitch', { x, y } );
     this.pitch = new Graphics();
     this.pitch.beginFill( 0xffffff );
     this.pitch.drawCircle( x, 320 - y, 16 );

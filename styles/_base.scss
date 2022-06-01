@@ -49,6 +49,10 @@ body {
 
   .container {
     max-width: 1120px;
+
+    @media ( max-width: $mobileMax ) {
+      padding: 0 3rem;
+    }
   }
 
   footer {
