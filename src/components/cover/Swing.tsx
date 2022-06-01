@@ -5,6 +5,7 @@ import { enter } from '../../redux/reducers/wallet';
 import eventBus from '../../utils/events';
 
 const Swing: FC = () => {
+  const { network } = useAppSelector( ( { wallet } ) => wallet );
   const dispatch = useAppDispatch();
   const onClickPractice = () => eventBus.emit( 'swing', 'practice' );
   const onClickLive = async () => eventBus.emit( 'swing', 'live' );
@@ -15,7 +16,7 @@ const Swing: FC = () => {
 
   return (
     <div className="Swing">
-      <button className="btn btn-primary" onClick={ onClickLive } type="button">
+      <button className="btn btn-primary" disabled={ network !== 'rinkeby' } onClick={ onClickLive } type="button">
         <div>Live swing</div>
       </button>
       <button className="btn btn-outline-secondary" onClick={ onClickPractice } type="button">
