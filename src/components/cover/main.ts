@@ -194,7 +194,15 @@ export class Scene extends Container {
     const pitchY = Math.floor( Math.random() * 321 );
     const contactX = x - pitchX;
     const contactY = y - pitchY;
-    if ( Math.abs( contactX ) > 120 || Math.abs( contactY ) > 120 ) return;
+    if ( Math.abs( contactX ) > 120 || Math.abs( contactY ) > 120 ) {
+      return this.onEntry( {
+        angle: 0,
+        distance: 0,
+        pitchX,
+        pitchY,
+        trajectory: 0,
+      } );
+    }
     const trajectory = contactY <= 0 ? 2 : 1;
     const distanceMultiplier = 500 * ( 1 - ( ( Math.abs( contactX ) + Math.abs( contactY ) ) / 160 ) );
     const distance = trajectory === 2 ? distanceMultiplier : distanceMultiplier / 2;
