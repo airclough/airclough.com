@@ -111,7 +111,7 @@ export class Scene extends Container {
 
   createZone() {
     const zone = new Zone();
-    zone.scale.set( .4, .4 );
+    zone.scale.set( 0.4, 0.4 );
     zone.x = 80;
     zone.y = 502;
     zone.pivot.x = 160;
@@ -176,7 +176,7 @@ export class Scene extends Container {
   onSwingComplete( { x, y } ) {
     this.field = this.createField();
     this.rubber = this.createRubber();
-    this.zone.scale.set( .4, .4 );
+    this.zone.scale.set( 0.4, 0.4 );
     this.zone.x = 80;
     this.zone.y = 502;
 
@@ -185,9 +185,8 @@ export class Scene extends Container {
 
     this.rubber.play();
 
-    this.swingType === 'live'
-      ? eventBus.emit( 'liveSwing', [ x, y ] )
-      : this.onPracticeSwing( [ x, y ] );
+    if ( this.swingType === 'live' ) eventBus.emit( 'liveSwing', [ x, y ] );
+    if ( this.swingType === 'practice' ) this.onPracticeSwing( [ x, y ] );
   }
 
   onPracticeSwing( [ x, y ] ) {
@@ -195,15 +194,13 @@ export class Scene extends Container {
     const pitchY = Math.floor( Math.random() * 321 );
     const contactX = x - pitchX;
     const contactY = y - pitchY;
-    console.log( { pitchX, pitchY, contactX, contactY } );
-    if ( Math.abs( contactX ) > 120 || Math.abs( contactY ) > 120 ) { console.log( 'STRIKE_OUT' ); return; }
-    console.log( 'CONTACT' );
+    if ( Math.abs( contactX ) > 120 || Math.abs( contactY ) > 120 ) return;
     const trajectory = contactY <= 0 ? 2 : 1;
     const distanceMultiplier = 500 * ( 1 - ( ( Math.abs( contactX ) + Math.abs( contactY ) ) / 160 ) );
     const distance = trajectory === 2 ? distanceMultiplier : distanceMultiplier / 2;
-    const angleX = contactX / 120 * 45;
+    const angleX = ( contactX / 120 ) * 45;
     const absAngle = angleX <= 0 ? 360 - Math.abs( angleX ) : angleX;
-    const angle = contactY < 60 ? absAngle : ( absAngle > 180 ? absAngle - 180 : absAngle + 180 );
+    const angle = contactY < 60 ? absAngle : absAngle > 180 ? absAngle - 180 : absAngle + 180;
 
     this.onEntry( {
       angle,
@@ -250,7 +247,13 @@ export class Scene extends Container {
 
   ballInPlay() {
     Ticker.shared.remove( this.pitch, this );
-    const { angle, distance, pitchX, pitchY, trajectory } = this.play;
+    const {
+      angle,
+      distance,
+      pitchX,
+      pitchY,
+      trajectory,
+    } = this.play;
     eventBus.emit( 'pitch', { x: pitchX, y: pitchY } );
     if ( !angle || !distance || !trajectory ) return this.ballInGlove();
     const { x, y } = aas( { angle, distance } );

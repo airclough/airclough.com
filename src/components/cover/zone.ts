@@ -5,6 +5,12 @@ import eventBus from '../../utils/events';
 const height = 320;
 const width = 320;
 
+const outOfBounds = ( { x, y }: { x: number; y: number; } ) => {
+  if ( x < 160 || x > 480 ) return true;
+  if ( y < 160 || y > 480 ) return true;
+  return false;
+};
+
 export default class BasePath extends Container {
   circle: Graphics;
 
@@ -29,13 +35,12 @@ export default class BasePath extends Container {
   private onSwing() {
     this.drawHitBox();
     this.interactive = true;
-
   }
 
   private onPointerMove( e ) {
     const { x, y } = e.data.global;
-    const outOfBounds = this.outOfBounds( { x, y } );
-    if ( outOfBounds ) return;
+    const oob = outOfBounds( { x, y } );
+    if ( oob ) return;
 
     this.circle.x = x - 320;
     this.circle.y = y - 320;
@@ -43,17 +48,11 @@ export default class BasePath extends Container {
 
   private onPointerDown( e ) {
     const { x, y } = e.data.global;
-    const outOfBounds = this.outOfBounds( { x, y } );
-    if ( outOfBounds ) return;
+    const oob = outOfBounds( { x, y } );
+    if ( oob ) return;
     this.interactive = false;
     console.log( { x: Math.round( x - 160 ), y: Math.round( 320 - ( y - 160 ) ) } );
     eventBus.emit( 'swingComplete', { x: Math.round( x - 160 ), y: Math.round( 320 - ( y - 160 ) ) } );
-  }
-
-  private outOfBounds( { x, y }: { x: number; y: number; } ) {
-    if ( x < 160 || x > 480 ) return true;
-    if ( y < 160 || y > 480 ) return true;
-    return false;
   }
 
   drawHitBox() {

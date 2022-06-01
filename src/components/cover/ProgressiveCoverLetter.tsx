@@ -1,4 +1,4 @@
-import React, { FC } from  'react';
+import React, { FC } from 'react';
 
 const ProgressiveCoverLetter: FC = () => (
   <div className="ProgressiveCoverLetter">

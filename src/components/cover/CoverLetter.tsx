@@ -1,4 +1,5 @@
-import React, { FC, useEffect } from  'react';
+/* eslint-disable max-len */
+import React, { FC, useEffect } from 'react';
 
 import { useAppSelector } from '../../redux/hooks';
 

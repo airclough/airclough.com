@@ -1,4 +1,5 @@
-import React, { FC } from  'react';
+/* eslint-disable max-len */
+import React, { FC } from 'react';
 
 const Cover: FC = () => (
   <div className="Cover">

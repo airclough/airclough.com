@@ -1,4 +1,5 @@
-import React, { FC } from  'react';
+/* eslint-disable max-len */
+import React, { FC } from 'react';
 
 const tech = [
   'React',
@@ -23,7 +24,7 @@ const NeyborlyCom: FC = () => (
         <div className="tech">
           <h3>Tech:</h3>
           <ul>
-            { tech.map( ( tech ) => <li key={ tech }>{ tech }</li> ) }
+            { tech.map( ( item ) => <li key={ item }>{ item }</li> ) }
           </ul>
         </div>
       </div>

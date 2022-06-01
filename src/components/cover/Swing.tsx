@@ -6,12 +6,8 @@ import eventBus from '../../utils/events';
 
 const Swing: FC = () => {
   const dispatch = useAppDispatch();
-  const onClickPractice = () => {
-    eventBus.emit( 'swing', 'practice' );
-  }
-  const onClickLive = async () => {
-    eventBus.emit( 'swing', 'live' );
-  };
+  const onClickPractice = () => eventBus.emit( 'swing', 'practice' );
+  const onClickLive = async () => eventBus.emit( 'swing', 'live' );
 
   useEffect( () => {
     eventBus.on( 'liveSwing', ( coords ) => dispatch( enter( coords ) ) );

@@ -1,4 +1,4 @@
-import { BigNumber, Contract, providers, utils } from 'ethers';
+import { Contract, providers } from 'ethers';
 import React, { FC, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -74,10 +74,10 @@ const Wallet: FC = () => {
 
       ethereum.on( 'accountsChanged', ( accounts: Array<string> ) => {
         console.log( 'accountsChanged', { accounts } );
-        const [ address ] = accounts;
+        const [ account ] = accounts;
 
-        dispatch( setAddress( address || null ) );
-        dispatch( setStatus( address ? 'CONNECTED' : 'NOT_CONNECTED' ) );
+        dispatch( setAddress( account || null ) );
+        dispatch( setStatus( account ? 'CONNECTED' : 'NOT_CONNECTED' ) );
       } );
 
       ethereum.on( 'chainChanged', ( chainId: string ) => {
@@ -96,22 +96,22 @@ const Wallet: FC = () => {
 
     provider.listAccounts()
       .then( ( accounts: Array<string> ) => {
-        const [ address ] = accounts;
+        const [ account ] = accounts;
 
-        dispatch( setAddress( address || '' ) );
-        dispatch( setStatus( address ? 'CONNECTED' : 'NOT_CONNECTED' ) );
+        dispatch( setAddress( account || '' ) );
+        dispatch( setStatus( account ? 'CONNECTED' : 'NOT_CONNECTED' ) );
       } );
   }, [ provider ] );
 
   useEffect( () => {
     if ( !provider || status !== 'CONNECTED' ) return;
-    const contract = new Contract(
+    const c = new Contract(
       contractAddress,
       abi,
-      provider.getSigner( 0 )
+      provider.getSigner( 0 ),
     );
 
-    dispatch( setContract( contract ) );
+    dispatch( setContract( c ) );
   }, [ provider, status ] );
 
   useEffect( () => {
@@ -123,9 +123,14 @@ const Wallet: FC = () => {
       winner: boolean,
       blockData: any,
     ) => {
-      console.log( { entryAddress, contactData, winner, blockData } );
       if ( entryAddress !== address ) return;
-      const { angle, distance, pitchX, pitchY, trajectory } = contactData;
+      const {
+        angle,
+        distance,
+        pitchX,
+        pitchY,
+        trajectory,
+      } = contactData;
       const entry = {
         angle: angle.toNumber() / 100,
         distance: distance.toNumber(),
@@ -137,10 +142,6 @@ const Wallet: FC = () => {
 
       eventBus.emit( 'entry', entry );
     } );
-
-    return () => {
-      // contract.off( 'entry' );
-    }
   }, [ contract ] );
 
   return (
