@@ -3,6 +3,7 @@ import React, { FC, useEffect } from 'react';
 
 import Cover from '../../src/components/cover/Cover';
 import MonumentPark from '../../src/components/cover/MonumentPark';
+import Footer from '../../src/components/shared/Footer';
 import { useAppDispatch, useAppSelector } from '../../src/redux/hooks';
 import { getCompany, setSlug } from '../../src/redux/reducers/cover';
 
@@ -19,6 +20,7 @@ const CompanyCover: FC = () => {
   }, [ company ] );
 
   useEffect( () => {
+    if ( !slug ) return;
     dispatch( getCompany( slug ) );
   }, [ slug ] );
 
@@ -26,6 +28,7 @@ const CompanyCover: FC = () => {
     <div className="CompanyCover">
       <Cover />
       <MonumentPark />
+      <Footer />
     </div>
   );
 };

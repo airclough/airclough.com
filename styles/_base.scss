@@ -48,6 +48,15 @@ body {
   }
 
   .container {
-    max-width: 960px;
+    max-width: 1120px;
+  }
+
+  footer {
+    padding: 10rem 0;
+    text-align: center;
+
+    @media ( max-width: $mobileMax ) {
+      padding: 5rem 0;
+    }
   }
 }

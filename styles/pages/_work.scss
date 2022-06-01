@@ -1,0 +1,157 @@
+.Work {
+  .Cover {
+    padding: 10rem 0;
+
+    @media ( max-width: $mobileMax ) {
+      padding: 3rem 0;
+    }
+
+    .logo {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 3rem;
+
+      .imageContainer {
+        background: #333;
+        display: inline-block;
+        padding: 1rem;
+
+        img {
+          display: block;
+          width: 100%;
+          height: 3rem;
+        }
+      }
+    }
+
+    p {
+      font-size: 1.25rem;
+      line-height: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+
+      &:last-of-type {
+        margin-bottom: 3rem;
+      }
+    }
+
+    .buttonContainer {
+      text-align: center;
+
+      a {
+        display: inline-block;
+        margin-right: 1rem;
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .projects {
+    > div {
+      margin-bottom: 5rem;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .container {
+        align-items: center;
+        display: flex;
+
+        > div {
+          width: 50%;
+        }
+
+        .details {
+          width: 40%;
+
+          @media ( max-width: $mobileMax ) {
+            width: 100%;
+          }
+
+          h2 {
+            font-size: 2rem;
+            font-weight: 100;
+            margin-bottom: .5rem;
+          }
+
+          .links {
+            margin-bottom: 3rem;
+
+            li {
+              display: inline-block;
+              margin-right: 1rem;
+
+              &:last-of-type {
+                margin-right: 0;
+              }
+            }
+          }
+
+          .description {
+            p {
+              font-size: 1.25rem;
+              line-height: 1.5rem;
+              margin-bottom: 1.5rem;
+            }
+          }
+
+          .tech {
+            color: #999;
+
+            h3 {
+              display: inline-block;
+              font-size: 1rem;
+              margin-right: 1rem;
+            }
+
+            ul {
+              display: inline-block;
+
+              li {
+                background: $primary;
+                border-radius: .25rem;
+                color: #fff;
+                display: inline-block;
+                font-size: .75rem;
+                margin-right: .5rem;
+                padding: .25rem;
+
+                &:last-of-type {
+                  margin-right: 0;
+                }
+              }
+            }
+          }
+        }
+
+        .image {
+          padding: 3rem;
+          width: 60%;
+
+          @media ( max-width: $mobileMax ) {
+            display: none;
+          }
+
+          img {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .Nvidia {
+      background-position: 50% 25%;
+      background-size: cover;
+      padding: 20rem 0;
+
+      @media ( max-width: $mobileMax ) {
+        padding: 10rem 0;
+      }
+    }
+  }
+}
