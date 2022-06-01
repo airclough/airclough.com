@@ -2,6 +2,8 @@
 .env*.local
 .next
 .npmrc
+artifacts
+cache
 node_modules
 yarn-debug.log*
 yarn-error.log*

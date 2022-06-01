@@ -46,4 +46,21 @@ body {
     margin: 0;
     padding: 0;
   }
+
+  .container {
+    max-width: 1120px;
+
+    @media ( max-width: $mobileMax ) {
+      padding: 0 3rem;
+    }
+  }
+
+  footer {
+    padding: 10rem 0;
+    text-align: center;
+
+    @media ( max-width: $mobileMax ) {
+      padding: 5rem 0;
+    }
+  }
 }

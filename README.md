@@ -17,10 +17,13 @@
 ## Tools
 
 * __ESLint__
+* __Hardhat__
 * __Next.js__
+* __Pixi.js__
 * __React__
 * __Redux__
 * __Sass__
+* __Solidity__
 * __TypeScript__
 * __Vercel__
 
