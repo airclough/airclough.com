@@ -7,6 +7,7 @@ interface Wallet {
   address: string;
   contract: any | null;
   displayAddress: string;
+  network: string;
   provider: any | null;
   status: Status;
 }
@@ -36,6 +37,7 @@ const initialState: Wallet = {
   address: '',
   contract: null,
   displayAddress: '',
+  network: '',
   provider: null,
   status: 'CONNECTING',
 };
@@ -66,6 +68,11 @@ export const walletSlice = createSlice( {
 
       state.contract = payload;
     },
+    setNetwork: ( state, action: PayloadAction<Wallet[ 'network' ]> ) => {
+      const { payload } = action;
+
+      state.network = payload;
+    },
     setProvider: ( state, action: PayloadAction<Wallet[ 'provider' ]> ) => {
       const { payload } = action;
 
@@ -83,6 +90,7 @@ export const {
   resetState,
   setAddress,
   setContract,
+  setNetwork,
   setProvider,
   setStatus,
 } = walletSlice.actions;

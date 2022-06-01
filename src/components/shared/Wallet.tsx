@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   setAddress,
   setContract,
+  setNetwork,
   setProvider,
   setStatus,
 } from '../../redux/reducers/wallet';
@@ -100,6 +101,13 @@ const Wallet: FC = () => {
 
         dispatch( setAddress( account || '' ) );
         dispatch( setStatus( account ? 'CONNECTED' : 'NOT_CONNECTED' ) );
+      } );
+
+    provider.getNetwork()
+      .then( ( network: any ) => {
+        const { name } = network;
+
+        dispatch( setNetwork( name ) );
       } );
   }, [ provider ] );
 
