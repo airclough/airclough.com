@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { config, dom } from '@fortawesome/fontawesome-svg-core';
 import NextHead from 'next/head';
-import Script from 'next/script'
+import Script from 'next/script';
 import React, { FC } from 'react';
 
 config.autoAddCss = false;

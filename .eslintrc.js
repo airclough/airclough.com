@@ -12,6 +12,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   rules: {
+    '@typescript-eslint/ban-ts-comment': 0,
     '@typescript-eslint/default-param-last': 0,
     'array-bracket-spacing': [ 'error', 'always' ],
     'class-methods-use-this': 0,
@@ -25,6 +26,7 @@ module.exports = {
     'import/extensions': 0,
     'import/prefer-default-export': 0,
     'no-param-reassign': 0,
+    'prefer-rest-params': 0,
     'semi': [ 'error', 'always' ],
     'space-in-parens': [ 'error', 'always' ],
     'template-curly-spacing': [ 'error', 'always' ],
