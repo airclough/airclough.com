@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { FC } from 'react';
 
 import Eth from '../src/components/Index/Eth';
@@ -8,6 +9,10 @@ import QuoteAndLinks from '../src/components/Index/QuoteAndLinks';
 
 const Index: FC = () => (
   <div className="Index">
+    <Head>
+      <title>airclough.com | Robby Fairclough</title>
+      <meta content="airclough.com | Robby Fairclough" key="title" property="og:title" />
+    </Head>
     <Eth />
     <div className="indexContainer">
       <Jordan />
