@@ -1,5 +1,7 @@
+// @ts-nocheck
 import { config, dom } from '@fortawesome/fontawesome-svg-core';
 import NextHead from 'next/head';
+import Script from 'next/script'
 import React, { FC } from 'react';
 
 config.autoAddCss = false;
@@ -18,15 +20,17 @@ const Head: FC = () => (
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <style>{ dom.css() }</style>
-    <script async src={ `https://www.googletagmanager.com/gtag/js?id=${ googleAnalyticsId }` } />
-    <script dangerouslySetInnerHTML={ {
-      __html: `
+    <Script
+      id="googleTagManager"
+      onLoad={ () => {
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push( arguments ); }
         gtag( 'js', new Date() );
-        gtag( 'config', '${ googleAnalyticsId }' );
-      `,
-    } } />
+        gtag( 'config', `${ googleAnalyticsId }` );
+      } }
+      src={ `https://www.googletagmanager.com/gtag/js?id=${ googleAnalyticsId }` }
+      strategy="afterInteractive"
+    />
   </NextHead>
 );
 
