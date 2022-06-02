@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect } from 'react';
 
@@ -27,6 +28,10 @@ const CompanyCover: FC = () => {
 
   return (
     <div className="CompanyCover">
+      <Head>
+        <title>airclough.com | Cover</title>
+        <meta content="airclough.com | Cover" key="title" property="og:title" />
+      </Head>
       <Cover />
       <MonumentPark />
       <MonumentParkRulesAndLeaderboard />
