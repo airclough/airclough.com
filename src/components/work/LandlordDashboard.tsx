@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import Image from 'next/image';
 import React, { FC } from 'react';
 
 const tech = [
@@ -12,7 +13,15 @@ const NeyborlyCom: FC = () => (
   <div className="NeyborlyCom">
     <div className="container">
       <div className="image">
-        <img src="/images/neyborly-landlord-dashboard.png" />
+        <Image
+          alt="Neyborly Landlord Dashboard"
+          height="1254"
+          layout="responsive"
+          placeholder="empty"
+          sizes="50vw"
+          src="/images/neyborly-landlord-dashboard.png"
+          width="1853"
+        />
       </div>
       <div className="details">
         <h2>Landlord Dashboard</h2>
