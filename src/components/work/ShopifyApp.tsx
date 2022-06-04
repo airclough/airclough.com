@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import Image from 'next/image';
 import React, { FC } from 'react';
 
 const tech = [
@@ -29,7 +30,15 @@ const ShopifyApp: FC = () => (
         </div>
       </div>
       <div className="image">
-        <img src="/images/neyborly-shopify-app.gif" />
+        <Image
+          alt="Neyborly Shopify App"
+          height="293"
+          layout="responsive"
+          placeholder="empty"
+          sizes="50vw"
+          src="/images/neyborly-shopify-app.gif"
+          width="520"
+        />
       </div>
     </div>
   </div>
