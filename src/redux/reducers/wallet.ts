@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { utils } from 'ethers';
 
+import { createDisplayAddress } from '../../utils/wallet';
+
 type Status = 'CONNECTED' | 'NOT_CONNECTED' | 'CONNECTING' | 'NOT_INSTALLED';
 
 interface Wallet {
@@ -24,15 +26,6 @@ export const enter = createAsyncThunk<any, number[], { state: any }>(
     return transactionReceipt;
   },
 );
-
-const createDisplayAddress = ( address: string ) => {
-  const { length } = address;
-  const firstFour = address.slice( 0, 6 );
-  const lastFour = address.slice( length - 4, length );
-  const displayAddress = `${ firstFour }...${ lastFour }`;
-
-  return displayAddress;
-};
 
 const initialState: Wallet = {
   address: '',
