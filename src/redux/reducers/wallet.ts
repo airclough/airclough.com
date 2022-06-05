@@ -17,10 +17,11 @@ export const enter = createAsyncThunk<any, number[], { state: any }>(
   async ( [ x, y ], { getState } ) => {
     const { wallet } = getState();
     const { contract } = wallet;
-    const transaction = await contract.enter( x, y, { value: utils.parseEther( '0.01' ) } )
+    const transaction = await contract.contract.enter( x, y, { value: utils.parseEther( '0.01' ) } )
       .catch( ( error ) => console.error( { error } ) );
+    const transactionReceipt = await transaction.wait();
 
-    return transaction;
+    return transactionReceipt;
   },
 );
 
