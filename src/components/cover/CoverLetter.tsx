@@ -15,14 +15,15 @@ const CoverLetter: FC = () => {
       <div className="logo">
         <img src={ url } />
       </div>
-      <p>Welcome { Name }, and thanks for stopping by my site. The purpose of this page is to act as an extension of my cover letter in order to show off my past projects and my current interests in software development.</p>
+      <p>Welcome <span>{ Name }</span>, and thanks for stopping by my site. The purpose of this page is to act as an extension of my cover letter in order to show off my past projects and my current interests in software development.</p>
       { Cover && <p /> }
-      <p>As noted on my resume, my previous position was as the CTO of Neyborly. I wrote code that ran everywhere from the AWS cloud to Nvidia hardware devices. <a href="">Here</a> is just a small sample of projects I worked on during my time at Neyborly.</p>
-      <p>Since leaving Neyborly in April, I have spent time upping my code game and adding a few new skills to my repertoire. One such skill being blockchain development. The Ethereum blockchain and the Solidity programming language to be exact. Below is a game I coded called Monument Park, an homage to the greatest baseball players to ever lace up their spikes. It combines my new found blockchain abilities and my love for the New York Yankees. All the code is up on <a href="https://github.com/airclough/airclough.com">Github</a>.</p>
+      <p>As noted on my resume, my previous position was as the CTO of Neyborly. I wrote code that ran everywhere from the AWS cloud to Nvidia hardware devices. <a href="/work/neyborly">Here</a> is just a small sample of projects I worked on during my time at Neyborly.</p>
+      <p>Since leaving Neyborly in April, I have spent time upping my code game and adding a few new skills to my repertoire. One such skill being blockchain development. The Ethereum blockchain and Solidity programming language to be exact. Below is a game I coded called Monument Park, a homage to the greatest baseball players to ever lace up their spikes. It combines my new found blockchain abilities and my love for the New York Yankees. Also, If you have a Spotify account, feel free to check out my <a href="/">home page</a> where I created a custom Spotify player.</p>
+      <p>All source code is up on <a href="https://github.com/airclough/airclough.com" target="_blank">Github</a>.</p>
       <div className="buttonContainer">
         <a href="/work/neyborly">
           <button className="btn btn-primary" type="button">
-            <div>Neyborly projects</div>
+            <div>View Neyborly projects</div>
           </button>
         </a>
         <a href="#monument-park">

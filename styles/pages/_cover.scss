@@ -20,6 +20,10 @@
         &:last-of-type {
           margin-bottom: 3rem;
         }
+
+        span {
+          font-weight: 700;
+        }
       }
 
       .buttonContainer {
@@ -204,6 +208,7 @@
         }
 
         ul {
+          margin-bottom: 3rem;
           padding: 0 3rem;
 
           li {
@@ -215,6 +220,10 @@
               font-weight: 700;
             }
           }
+        }
+
+        p {
+          color: #999;
         }
       }
 

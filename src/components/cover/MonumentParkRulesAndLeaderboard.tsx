@@ -16,6 +16,7 @@ const MonumentParkRulesAndLeaderboard = () => (
           <li>Can't an argument be made that all crypto is fake money, regardless of network? See, the thing about tha-- As there's a drive into deep left field by Castellanos and that'll be a home run.</li>
           <li>Once the transaction is confirmed on the block, the pitch will be thrown. Good luck.</li>
         </ul>
+        <p>For a look at the inner workings of Monument Park, <a href="https://github.com/airclough/airclough.com/blob/main/contracts/MonumentPark.sol" target="_blank">here</a> is where you can find the code to the smart contract that has been deployed to the Rinkeby Test Network.</p>
       </div>
       <Leaderboard />
     </div>
