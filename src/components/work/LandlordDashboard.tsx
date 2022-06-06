@@ -29,7 +29,7 @@ const NeyborlyCom: FC = () => (
           <li><a href="https://landlord.neyborly.com" target="_blank">Web App</a></li>
         </ul>
         <div className="description">
-          <p>The Neyborly Landlord Dashboard is the main hub for landlords to track monitary performance and AI traffic metrics for each of their locations in the Neyborly system.</p>
+          <p>The Neyborly Landlord Dashboard is the main hub for landlords to track monetary performance and AI traffic metrics for each of their locations in the Neyborly system.</p>
         </div>
         <div className="tech">
           <h3>Tech:</h3>
