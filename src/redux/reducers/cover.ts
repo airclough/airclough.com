@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getCompany as getCompanyReq } from '../../services/airclough-api';
 
 interface Fields {
-  Cover: string;
+  Facts: string;
   Logo: any;
   Name: string;
 }
