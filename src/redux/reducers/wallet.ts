@@ -1,10 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { utils } from 'ethers';
 
+import eventBus from '../../utils/events';
+import { createDisplayAddress } from '../../utils/wallet';
+
 type Status = 'CONNECTED' | 'NOT_CONNECTED' | 'CONNECTING' | 'NOT_INSTALLED';
 
 interface Wallet {
   address: string;
+  balance: number;
   contract: any | null;
   displayAddress: string;
   network: string;
@@ -17,24 +21,29 @@ export const enter = createAsyncThunk<any, number[], { state: any }>(
   async ( [ x, y ], { getState } ) => {
     const { wallet } = getState();
     const { contract } = wallet;
-    const transaction = await contract.enter( x, y, { value: utils.parseEther( '0.01' ) } )
+    const transaction = await contract.contract.enter( x, y, { value: utils.parseEther( '0.01' ) } )
       .catch( ( error ) => console.error( { error } ) );
+    const transactionReceipt = await transaction.wait();
 
-    return transaction;
+    return transactionReceipt;
   },
 );
 
-const createDisplayAddress = ( address: string ) => {
-  const { length } = address;
-  const firstFour = address.slice( 0, 6 );
-  const lastFour = address.slice( length - 4, length );
-  const displayAddress = `${ firstFour }...${ lastFour }`;
+export const getBalance = createAsyncThunk<any, void, { state: any }>(
+  'getBalance',
+  async ( _, { getState } ) => {
+    const { wallet } = getState();
+    const { contract } = wallet;
+    const transaction = await contract.contract.getBalance()
+      .catch( ( error ) => console.error( { error } ) );
 
-  return displayAddress;
-};
+    return utils.formatEther( transaction.toString() );
+  },
+);
 
 const initialState: Wallet = {
   address: '',
+  balance: 0,
   contract: null,
   displayAddress: '',
   network: '',
@@ -49,6 +58,14 @@ export const walletSlice = createSlice( {
     },
     'enter/rejected': () => {
       console.log( 'enter.rejected' );
+      eventBus.emit( 'playInProgress', false );
+    },
+    'getBalance/fulfilled': ( state, { payload } ) => {
+      console.log( { payload } );
+      state.balance = payload;
+    },
+    'getBalance/rejected': () => {
+      console.log( 'getBalance.rejected' );
     },
   },
   initialState,

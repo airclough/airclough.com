@@ -1,19 +1,16 @@
-import { Contract, providers } from 'ethers';
+import { providers } from 'ethers';
 import React, { FC, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
+  getBalance,
   setAddress,
   setContract,
   setNetwork,
   setProvider,
   setStatus,
 } from '../../redux/reducers/wallet';
-import eventBus from '../../utils/events';
-import MonumentPark from '../../../artifacts/contracts/MonumentPark.sol/MonumentPark.json';
-
-const contractAddress = '0x76f3F26C0251dC71274052C8FC05710B20c09183';
-const { abi } = MonumentPark;
+import Contract from '../../utils/monumentParkContract';
 
 const Connect: FC = () => {
   const { provider } = useAppSelector( ( { wallet } ) => wallet );
@@ -60,7 +57,6 @@ const Install: FC = () => (
 const Wallet: FC = () => {
   const {
     address,
-    contract,
     provider,
     status,
   } = useAppSelector( ( { wallet } ) => wallet );
@@ -113,44 +109,10 @@ const Wallet: FC = () => {
 
   useEffect( () => {
     if ( !provider || status !== 'CONNECTED' ) return;
-    const c = new Contract(
-      contractAddress,
-      abi,
-      provider.getSigner( 0 ),
-    );
 
-    dispatch( setContract( c ) );
+    dispatch( setContract( new Contract( { address, signer: provider.getSigner( 0 ) } ) ) );
+    dispatch( getBalance() );
   }, [ provider, status ] );
-
-  useEffect( () => {
-    if ( !contract ) return;
-
-    contract.on( 'Entry', (
-      entryAddress: string,
-      contactData: any,
-      winner: boolean,
-      blockData: any,
-    ) => {
-      if ( entryAddress !== address ) return;
-      const {
-        angle,
-        distance,
-        pitchX,
-        pitchY,
-        trajectory,
-      } = contactData;
-      const entry = {
-        angle: angle.toNumber() / 100,
-        distance: distance.toNumber(),
-        pitchX: pitchX.toNumber(),
-        pitchY: pitchY.toNumber(),
-        trajectory,
-      };
-      console.log( { entry } );
-
-      eventBus.emit( 'entry', entry );
-    } );
-  }, [ contract ] );
 
   return (
     <div className="Wallet">

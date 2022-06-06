@@ -1,4 +1,6 @@
 .CompanyCover {
+  position: relative;
+
   .Cover {
     padding: 10rem 0;
 
@@ -89,6 +91,15 @@
 
         > div {
           width: 33.3333333333%;
+        }
+
+        .pool {
+          align-items: center;
+          display: flex;
+
+          .balance {
+            margin-left: 1rem;
+          }
         }
 
         .logo {
@@ -216,10 +227,53 @@
           text-transform: uppercase;
         }
 
-        .board {
-          background: #e6e6e6;
-          padding: 3rem 1.5rem;
-          text-align: center;
+        ul {
+          border: 1px solid #e6e6e6;
+          padding: 1.5rem;
+
+          li {
+            align-items: center;
+            display: flex;
+            margin-bottom: 1.5rem;
+
+            &:last-of-type {
+              margin-bottom: 0;
+            }
+
+            .place {
+              color: #ccc;
+              font-size: .75rem;
+              margin-right: 1.5rem;
+            }
+
+            .address {
+              flex-grow: 2;
+            }
+
+            .distance {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .Modal {
+    .overlay {
+      background: rgba( 0, 0, 0, .8 );
+
+      .content {
+        box-shadow: none;
+
+        .PlayResult {
+          img {
+            display: block;
+            margin-bottom: 1.5rem;
+            width: 100%;
+          }
+
+
         }
       }
     }

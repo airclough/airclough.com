@@ -5,6 +5,8 @@ import {
   Loader,
   Rectangle,
   Sprite,
+  Text,
+  TextStyle,
   Texture,
   Ticker,
 } from 'pixi.js';
@@ -65,6 +67,8 @@ class ExtendedAnimatedSprite extends AnimatedSprite {
 
 export class Scene extends Container {
   private ball: ExtendedAnimatedSprite | null;
+
+  private distance: Text | null;
 
   private field: Sprite;
 
@@ -162,6 +166,7 @@ export class Scene extends Container {
   }
 
   onSwing( swingType: string ) {
+    if ( this.distance ) { this.distance.destroy(); this.distance = null; }
     if ( this.icon ) { this.icon.destroy(); this.icon = null; }
     this.swingType = swingType;
     this.field.destroy();
@@ -222,8 +227,10 @@ export class Scene extends Container {
   onEntry( entry: any ) {
     const { angle, trajectory } = entry;
     this.play = { ...entry, angle: angle || 360, trajectory: trajectoryMap[ trajectory ] };
-    this.rubber.destroy();
-    this.rubber = null;
+    if ( this.rubber ) {
+      this.rubber.destroy();
+      this.rubber = null;
+    }
     this.ball = this.createBall();
     this.ball.onComplete = () => this.pitch();
     this.ball.play();
@@ -273,6 +280,7 @@ export class Scene extends Container {
       .to( endCoords, time > 2000 ? time : 2000 )
       .easing( trajectory === 'FLY_BALL' ? Tween.Easing.Linear.None : Tween.Easing.Quadratic.Out )
       .onUpdate( ( newCoords, elapsed ) => {
+        if ( !this.ball ) return;
         if ( trajectory !== 'GROUND_BALL' ) {
           const ascending = elapsed < 0.5;
           this.ball.height = ascending ? 4 * ( 1 + ( elapsed * 8 ) ) : 4 * ( 9 - ( elapsed * 8 ) );
@@ -300,6 +308,7 @@ export class Scene extends Container {
     const { x, y } = this.ball;
     this.ball.destroy();
     this.ball = null;
+    const { distance } = this.play;
     const iconAttrs = this.setIconAttrs();
     if ( iconAttrs ) {
       const { height, name, width } = iconAttrs;
@@ -312,6 +321,23 @@ export class Scene extends Container {
 
       this.addChild( this.icon );
     }
+    if ( distance > 0 ) {
+      const textStyle = new TextStyle( {
+        fill: '#fff',
+        fontFamily: 'Kanit',
+        fontSize: 12,
+        fontWeight: 'bold',
+      } );
+      this.distance = new Text( `${ Math.round( distance ) }`, textStyle );
+      this.distance.anchor.set( 0.5 );
+      this.distance.x = x + 24;
+      this.distance.y = y;
+
+      this.addChild( this.distance );
+    }
+
+    eventBus.emit( 'playInProgress', false );
+    eventBus.emit( 'playResult', this.play );
   }
 
   setIconAttrs(): any {
