@@ -6,7 +6,7 @@ import eventBus from '../../utils/events';
 const playResultMap = {
   FAIR_BALL: {
     header: '',
-    description: 'Nice try. But according to our analytics nerds, your launch angle was slightly off.',
+    description: 'Nice try. But according to the nerds in our analytics department, your launch angle was slightly off.',
     src: '/images/robbed.webp',
   },
   STRIKE_OUT: {
