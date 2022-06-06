@@ -10,10 +10,10 @@ export const addToMonumentParkLeaderboard = (
   {
     address,
     hash,
-    distance
+    distance,
   }: {
     address: string;
     hash: string;
     distance: number;
-  }
+  },
 ) => axios.post( `${ aircloughApiUrl }/monument-park/leaderboard`, { address, hash, distance } );

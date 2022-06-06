@@ -35,6 +35,6 @@ const MonumentPark: FC = () => {
       </main>
     </div>
   );
-}
+};
 
 export default MonumentPark;

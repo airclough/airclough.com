@@ -1,7 +1,7 @@
-import { Contract as ethersContract } from 'ethers';
+import { Contract as EthersContract } from 'ethers';
 
+import eventBus from './events';
 import { addToMonumentParkLeaderboard } from '../services/airclough-api';
-import eventBus from '../utils/events';
 import MonumentPark from '../../artifacts/contracts/MonumentPark.sol/MonumentPark.json';
 
 const { abi } = MonumentPark;
@@ -16,7 +16,7 @@ export default class Contract {
 
   constructor( { address, signer }: { address: string; signer: any; } ) {
     this.address = address;
-    this.contract = new ethersContract(
+    this.contract = new EthersContract(
       contractAddress,
       abi,
       signer,
@@ -51,9 +51,10 @@ export default class Contract {
       const { transactionHash: hash } = blockData;
       console.log( { entry, hash } );
 
-      if ( fairBall( entry.distance, entry.angle ) )
+      if ( fairBall( entry.distance, entry.angle ) ) {
         addToMonumentParkLeaderboard( { address: this.address, hash, distance: entry.distance } )
           .catch( ( error ) => console.error( { error } ) );
+      }
 
       eventBus.emit( 'entry', entry );
     } );

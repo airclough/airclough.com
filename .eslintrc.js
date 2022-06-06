@@ -20,6 +20,7 @@ module.exports = {
     'consistent-return': 0,
     'max-classes-per-file': 0,
     'max-len': [ 'error', { 'code': 120 } ],
+    'no-extra-boolean-cast': 0,
     'no-nested-ternary': 0,
     'no-plusplus': 0,
     'no-underscore-dangle': 0,

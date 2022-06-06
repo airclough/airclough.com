@@ -19,14 +19,14 @@ const playResultMap = {
     description: 'Today- You should consider yourself the luckiest person on the face of the earth.',
     src: '/images/luckiest.webp',
   },
-}
+};
 
 const PlayResult = ( { playResult } ) => (
   <div className="PlayResult">
     <img src={ playResult.src } />
     <p className="description">{ playResult.description }</p>
   </div>
-)
+);
 
 const Modal: FC = () => {
   const [ playResult, setPlayResult ] = useState<string>( null );
