@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { FC, useEffect } from 'react';
 
 import Cover from '../../src/components/cover/Cover';
+import Modal from '../../src/components/cover/Modal';
 import MonumentPark from '../../src/components/cover/MonumentPark';
 import MonumentParkRulesAndLeaderboard from '../../src/components/cover/MonumentParkRulesAndLeaderboard';
 import Footer from '../../src/components/shared/Footer';
@@ -36,6 +37,7 @@ const CompanyCover: FC = () => {
       <MonumentPark />
       <MonumentParkRulesAndLeaderboard />
       <Footer />
+      <Modal />
     </div>
   );
 };

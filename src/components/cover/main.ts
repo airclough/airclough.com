@@ -222,8 +222,10 @@ export class Scene extends Container {
   onEntry( entry: any ) {
     const { angle, trajectory } = entry;
     this.play = { ...entry, angle: angle || 360, trajectory: trajectoryMap[ trajectory ] };
-    this.rubber.destroy();
-    this.rubber = null;
+    if ( this.rubber ) {
+      this.rubber.destroy();
+      this.rubber = null;
+    }
     this.ball = this.createBall();
     this.ball.onComplete = () => this.pitch();
     this.ball.play();
@@ -273,6 +275,7 @@ export class Scene extends Container {
       .to( endCoords, time > 2000 ? time : 2000 )
       .easing( trajectory === 'FLY_BALL' ? Tween.Easing.Linear.None : Tween.Easing.Quadratic.Out )
       .onUpdate( ( newCoords, elapsed ) => {
+        if ( !this.ball ) return;
         if ( trajectory !== 'GROUND_BALL' ) {
           const ascending = elapsed < 0.5;
           this.ball.height = ascending ? 4 * ( 1 + ( elapsed * 8 ) ) : 4 * ( 9 - ( elapsed * 8 ) );
@@ -311,6 +314,9 @@ export class Scene extends Container {
       this.icon.y = y;
 
       this.addChild( this.icon );
+
+      eventBus.emit( 'playInProgress', false );
+      eventBus.emit( 'playResult', this.play );
     }
   }
 

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { utils } from 'ethers';
 
+import eventBus from '../../utils/events';
 import { createDisplayAddress } from '../../utils/wallet';
 
 type Status = 'CONNECTED' | 'NOT_CONNECTED' | 'CONNECTING' | 'NOT_INSTALLED';
@@ -43,6 +44,7 @@ export const walletSlice = createSlice( {
     },
     'enter/rejected': () => {
       console.log( 'enter.rejected' );
+      eventBus.emit( 'playInProgress', false );
     },
   },
   initialState,

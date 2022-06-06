@@ -1,4 +1,6 @@
 .CompanyCover {
+  position: relative;
+
   .Cover {
     padding: 10rem 0;
 
@@ -243,6 +245,26 @@
               font-weight: 700;
             }
           }
+        }
+      }
+    }
+  }
+
+  .Modal {
+    .overlay {
+      background: rgba( 0, 0, 0, .8 );
+
+      .content {
+        box-shadow: none;
+
+        .PlayResult {
+          img {
+            display: block;
+            margin-bottom: 1.5rem;
+            width: 100%;
+          }
+
+          
         }
       }
     }

@@ -35,6 +35,8 @@ export default class BasePath extends Container {
   private onSwing() {
     this.drawHitBox();
     this.interactive = true;
+    
+    eventBus.emit( 'playInProgress', true );
   }
 
   private onPointerMove( e ) {
