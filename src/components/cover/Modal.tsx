@@ -6,7 +6,7 @@ import eventBus from '../../utils/events';
 const playResultMap = {
   FAIR_BALL: {
     header: '',
-    description: 'Nice try. But you didn\'t quite get enough of it.',
+    description: 'Nice try. But according to our analytics nerds, your launch angle was slightly off.',
     src: '/images/robbed.webp',
   },
   STRIKE_OUT: {
@@ -41,7 +41,7 @@ const Modal: FC = () => {
         setPlayResult( 'STRIKE_OUT' );
       }, 1000 );
     } );
-  } )
+  }, [] );
 
   return (
     <div className="Modal" style={ { opacity: +( !!playResult ), zIndex: !!playResult ? 1000 : -1 } }>

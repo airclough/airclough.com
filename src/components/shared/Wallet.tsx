@@ -3,6 +3,7 @@ import React, { FC, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
+  getBalance,
   setAddress,
   setContract,
   setNetwork,
@@ -110,6 +111,7 @@ const Wallet: FC = () => {
     if ( !provider || status !== 'CONNECTED' ) return;
 
     dispatch( setContract( new Contract( { address, signer: provider.getSigner( 0 ) } ) ) );
+    dispatch( getBalance() );
   }, [ provider, status ] );
 
   return (

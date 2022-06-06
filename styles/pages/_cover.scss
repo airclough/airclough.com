@@ -93,6 +93,15 @@
           width: 33.3333333333%;
         }
 
+        .pool {
+          align-items: center;
+          display: flex;
+
+          .balance {
+            margin-left: 1rem;
+          }
+        }
+
         .logo {
           align-items: center;
           display: flex;
@@ -264,7 +273,7 @@
             width: 100%;
           }
 
-          
+
         }
       }
     }

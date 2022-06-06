@@ -8,6 +8,7 @@ type Status = 'CONNECTED' | 'NOT_CONNECTED' | 'CONNECTING' | 'NOT_INSTALLED';
 
 interface Wallet {
   address: string;
+  balance: number;
   contract: any | null;
   displayAddress: string;
   network: string;
@@ -28,8 +29,21 @@ export const enter = createAsyncThunk<any, number[], { state: any }>(
   },
 );
 
+export const getBalance = createAsyncThunk<any, void, { state: any }>(
+  'getBalance',
+  async ( _, { getState } ) => {
+    const { wallet } = getState();
+    const { contract } = wallet;
+    const transaction = await contract.contract.getBalance()
+      .catch( ( error ) => console.error( { error } ) );
+
+    return utils.formatEther( transaction.toString() );
+  },
+);
+
 const initialState: Wallet = {
   address: '',
+  balance: 0,
   contract: null,
   displayAddress: '',
   network: '',
@@ -45,6 +59,13 @@ export const walletSlice = createSlice( {
     'enter/rejected': () => {
       console.log( 'enter.rejected' );
       eventBus.emit( 'playInProgress', false );
+    },
+    'getBalance/fulfilled': ( state, { payload } ) => {
+      console.log( { payload } );
+      state.balance = payload;
+    },
+    'getBalance/rejected': () => {
+      console.log( 'getBalance.rejected' );
     },
   },
   initialState,

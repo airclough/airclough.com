@@ -5,6 +5,8 @@ import {
   Loader,
   Rectangle,
   Sprite,
+  Text,
+  TextStyle,
   Texture,
   Ticker,
 } from 'pixi.js';
@@ -65,6 +67,8 @@ class ExtendedAnimatedSprite extends AnimatedSprite {
 
 export class Scene extends Container {
   private ball: ExtendedAnimatedSprite | null;
+
+  private distance: Text | null;
 
   private field: Sprite;
 
@@ -162,6 +166,7 @@ export class Scene extends Container {
   }
 
   onSwing( swingType: string ) {
+    if ( this.distance ) { this.distance.destroy(); this.distance = null; }
     if ( this.icon ) { this.icon.destroy(); this.icon = null; }
     this.swingType = swingType;
     this.field.destroy();
@@ -303,6 +308,7 @@ export class Scene extends Container {
     const { x, y } = this.ball;
     this.ball.destroy();
     this.ball = null;
+    const { distance } = this.play;
     const iconAttrs = this.setIconAttrs();
     if ( iconAttrs ) {
       const { height, name, width } = iconAttrs;
@@ -314,10 +320,24 @@ export class Scene extends Container {
       this.icon.y = y;
 
       this.addChild( this.icon );
-
-      eventBus.emit( 'playInProgress', false );
-      eventBus.emit( 'playResult', this.play );
     }
+    if ( distance > 0 ) {
+      const textStyle = new TextStyle( {
+        fill: '#fff',
+        fontFamily: 'Kanit',
+        fontSize: 12,
+        fontWeight: 'bold',
+      } );
+      this.distance = new Text( `${ Math.round( distance ) }`, textStyle );
+      this.distance.anchor.set( 0.5 );
+      this.distance.x = x + 24;
+      this.distance.y = y;
+
+      this.addChild( this.distance );
+    }
+
+    eventBus.emit( 'playInProgress', false );
+    eventBus.emit( 'playResult', this.play );
   }
 
   setIconAttrs(): any {
