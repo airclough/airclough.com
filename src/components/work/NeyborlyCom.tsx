@@ -21,6 +21,7 @@ const NeyborlyCom: FC = () => (
         </ul>
         <div className="description">
           <p>Built in React and React Native respectively, the Neyborly Web App and Neyborly iOS App powered the event management side of the business.</p>
+          <p>At its height, Neyborly.com saw hundreds of bookings per month across locations in SF, LA, and Sacramento.</p>
         </div>
         <div className="tech">
           <h3>Tech:</h3>

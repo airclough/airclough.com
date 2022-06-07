@@ -6,6 +6,7 @@ const tech = [
   'React',
   'Node',
   'Express',
+  'Nvidia DeepStream',
   'AWS',
 ];
 
@@ -29,7 +30,8 @@ const NeyborlyCom: FC = () => (
           <li><a href="https://landlord.neyborly.com" target="_blank">Web App</a></li>
         </ul>
         <div className="description">
-          <p>The Neyborly Landlord Dashboard is the main hub for landlords to track monetary performance and AI traffic metrics for each of their locations in the Neyborly system.</p>
+          <p>The Neyborly Landlord Dashboard is the main hub for landlords to track monetary performance and AI traffic metrics across each of their locations on the Neyborly platform.</p>
+          <p>Built in React, the dashboard leverages Twilio for login and notifications, Stripe Connect for monthly payouts, and Nvidia DeepStream for AI metrics (person and vehicle counts).</p>
         </div>
         <div className="tech">
           <h3>Tech:</h3>
